@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: 16px;
+}
+
+* {
+  @apply m-0 p-0 box-border relative;
+}
+
+body {
+  @apply overflow-x-hidden;
+}
+
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply w-2 bg-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply w-2 bg-[#FF0000] hover:bg-[#FF0000CC] rounded-full;
+}
