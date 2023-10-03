@@ -10,12 +10,14 @@ export const Header = () => {
     <Box>
       <AppBar position="static">
         <Toolbar sx={ToolBarStyle}>
+					<Box sx={{ flexGrow: 1, justifyContent: "start" }}>
           <Button
             onClick={() => navigate("/")}
-            sx={{ ...NavLinkStyle, flexGrow: 1, justifyContent: "start" }}
+            sx={NavLinkStyle}
           >
             <Typography variant="h6">TicTacToe</Typography>
           </Button>
+					</Box>
           <NavBar />
           <Profile />
         </Toolbar>

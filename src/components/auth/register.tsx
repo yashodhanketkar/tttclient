@@ -1,8 +1,8 @@
 import { AuthSerivce } from "@/services";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, InputAdornment, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FormContainer, FormElements } from "./style";
+import { FormButton, FormContainer, FormElements, InputPropsStyle } from "./style";
 
 type User = {
   username: string;
@@ -38,6 +38,7 @@ export const Register = () => {
           placeholder="username"
           type="text"
           sx={FormElements}
+					InputProps={{sx: InputPropsStyle.sx, endAdornment: <InputAdornment position="end">Test</InputAdornment>}}
           {...register("username", { required: true })}
           error={Boolean(errors.username)}
           helperText={errors.username && "Field is required"}
@@ -46,6 +47,7 @@ export const Register = () => {
           placeholder="password"
           type="password"
           sx={FormElements}
+					InputProps={InputPropsStyle}
           {...register("password", { required: true })}
           error={Boolean(errors.password)}
           helperText={errors.password && "Field is required"}
@@ -54,6 +56,7 @@ export const Register = () => {
           placeholder="Confirm Password"
           type="password"
           sx={FormElements}
+					InputProps={InputPropsStyle}
           {...register("cnfPassword", {
             required: true,
             validate: (val: string) => {
@@ -66,7 +69,7 @@ export const Register = () => {
           error={Boolean(errors.cnfPassword)}
           helperText={errors.cnfPassword && `${cnfMessage}`}
         />
-        <Button sx={FormElements} variant="contained" type="submit">
+        <Button sx={FormButton} variant="contained" type="submit">
           Submit
         </Button>
       </Box>

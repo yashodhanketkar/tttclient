@@ -10,7 +10,7 @@ export type StatType = {
   drawRate: number;
   boards: {
     _id: string;
-    isOver: boolean;
+    isGameOver: boolean;
     hasWinner: boolean;
     winner: {
       _id: string;

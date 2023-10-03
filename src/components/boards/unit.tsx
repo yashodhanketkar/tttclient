@@ -1,18 +1,43 @@
 import { BoardService } from "@/services/boards";
-import { Box, Button, Container, Grid, Paper } from "@mui/material";
+import ContentCopy from "@mui/icons-material/ContentCopy";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import {
+  Alert,
+  AlertColor,
+  Box,
+  Button,
+  Container,
+  Grid,
+  Paper,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import ReactLoading from "react-loading";
-import { useParams } from "react-router-dom";
-import { BoardUnitButton, BoardUnitContainer, BoardUnitGrid } from "./style";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  BoardUnitButton,
+  BoardUnitContainer,
+  BoardUnitGrid,
+  KeyBoxUnit,
+  ReturnButton,
+} from "./style";
 import { BoardType } from "./type";
 
+type TAlert = {
+  message: string;
+  severity: AlertColor;
+};
+
 export const Board = () => {
-  const [grid, setGrid] = useState<string[]>([]);
+  const [board, setBoard] = useState<BoardType>();
   const [loading, setLoading] = useState(true);
-  const [isOver, setIsOver] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [snackAlert, setSnackAlert] = useState<TAlert | null>(null);
   const { id } = useParams();
   const [socketData, setSocketData] = useState("");
   const websock = useMemo(() => new WebSocket("ws://127.0.0.1:5555/"), []);
+  const navigate = useNavigate();
 
   websock.onmessage = (e) => {
     setSocketData(JSON.parse(e.data));
@@ -20,24 +45,33 @@ export const Board = () => {
 
   useEffect(() => {
     const apiData = async () => {
-      const board: BoardType = await BoardService.getID(id as string);
-      if (board) {
-        setGrid(board.grid);
-        setIsOver(board.isGameOver);
+      const data: BoardType = await BoardService.getID(id as string);
+      if (data) {
+        if (data.isGameOver) {
+          setOpen(true);
+          setSnackAlert({ message: "Game is over", severity: "info" });
+        }
+        setBoard(data);
       }
     };
     apiData();
     setLoading(false);
   }, [id, socketData]);
 
+  if (!board) return <></>;
+
   const handleSend = async (index: number, pos: string) => {
-    if (isOver) {
+    if (board.isGameOver) {
       alert("Game is over");
       return;
     }
 
     if (pos !== "") {
-      alert("Illegal move");
+      setSnackAlert({
+        message: "Position already filled",
+        severity: "warning",
+      });
+      setOpen(true);
       return;
     }
 
@@ -45,7 +79,11 @@ export const Board = () => {
     if (message === "ok") {
       console.log("Played");
     } else {
-      alert("Illegal move");
+      setSnackAlert({
+        message: "Out of turn",
+        severity: "error",
+      });
+      setOpen(true);
     }
   };
 
@@ -72,11 +110,11 @@ export const Board = () => {
     <Container>
       <Paper elevation={3} sx={BoardUnitContainer}>
         <Grid container sx={BoardUnitGrid}>
-          {grid.length > 0 &&
-            grid.map((pos, i) => (
+          {board.grid.length > 0 &&
+            board.grid.map((pos, i) => (
               <Grid key={i} item xs={4}>
                 <Button
-                  disabled={isOver}
+                  disabled={board.isGameOver}
                   sx={{
                     ...BoardUnitButton,
                     backgroundColor: pos === "" ? "transparent" : "#FFEEEE66",
@@ -89,6 +127,41 @@ export const Board = () => {
             ))}
         </Grid>
       </Paper>
+      {board.isGameOver ? (
+        <Button
+          startIcon={<KeyboardArrowLeft />}
+          sx={ReturnButton}
+          variant="contained"
+          onClick={() => navigate("/board")}
+        >
+          Return
+        </Button>
+      ) : (
+        <>
+          {board.numberOfPlayers !== 2 && (
+            <Box sx={KeyBoxUnit}>
+              <Typography variant="body2">Share this key</Typography>
+              <Typography variant="h6">{board.key}</Typography>
+              <Button
+                onClick={() => navigator.clipboard.writeText(board.key)}
+                endIcon={<ContentCopy />}
+                variant="contained"
+              >
+                Copy
+              </Button>
+            </Box>
+          )}
+        </>
+      )}
+      {snackAlert && (
+        <Snackbar
+          open={open}
+          autoHideDuration={2000}
+          onClose={() => setOpen(false)}
+        >
+          <Alert severity={snackAlert.severity}>{snackAlert.message}</Alert>
+        </Snackbar>
+      )}
     </Container>
   );
 };

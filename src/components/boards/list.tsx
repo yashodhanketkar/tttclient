@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToTop } from "../interface/common";
 import { BoardButtton, BoardContainer, BoardGames } from "./style";
 import { BoardType } from "./type";
 
@@ -71,6 +72,7 @@ export const Boards = () => {
             </Table>
           </Grid>
         ))}
+      <ToTop />
     </Grid>
   );
 };

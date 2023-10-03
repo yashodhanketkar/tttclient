@@ -1,10 +1,8 @@
 import { StatService } from "@/services/stats";
-import UpIcon from "@mui/icons-material/KeyboardArrowUp";
 import {
   Box,
   Button,
   Container,
-  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -14,6 +12,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { ToTop } from "../interface/common";
 import { StatsButtton } from "./style";
 import { StatType } from "./type";
 
@@ -116,7 +115,7 @@ export const Stat = () => {
             <TableRow key={board._id}>
               <TableCell>{i + 1}</TableCell>
               <TableCell>
-                {board.isOver
+                {board.isGameOver
                   ? board.hasWinner
                     ? "Won by " + board.winner.username
                     : "Draw"
@@ -131,22 +130,7 @@ export const Stat = () => {
           ))}
         </TableBody>
       </Table>
-      <IconButton
-        onClick={() => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }}
-        sx={{
-          position: "fixed",
-          bottom: 50,
-          right: 10,
-          zIndex: 999,
-          borderRadius: "100%",
-          aspectRatio: 1,
-          backgroundColor: "#FF000055",
-        }}
-      >
-        <UpIcon />
-      </IconButton>
+      <ToTop />
     </Container>
   );
 };

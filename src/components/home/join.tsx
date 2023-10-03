@@ -1,5 +1,14 @@
 import { BoardService } from "@/services/boards";
-import { Box, Button, Dialog, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   FieldErrors,
@@ -23,18 +32,19 @@ type NewGameProps = {
 
 export const JoinGame = ({ open, handleClick }: NewGameProps) => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const [id, setId] = useState("");
   const [boards, setBoards] = useState<BoardType[]>();
 
   useEffect(() => {
     const apiData = async () => {
-      const data = await BoardService.getAll();
-      if (data) setBoards(data);
-      setLoading(false);
+      const data: BoardType[] = await BoardService.getAll();
+      if (data && data.length > 0) {
+        const availableBoards = data.filter((board) => !board.isGameOver);
+        setBoards(availableBoards);
+      }
     };
     apiData();
-  }, []);
+  }, [open]);
 
   const {
     register,
@@ -53,19 +63,21 @@ export const JoinGame = ({ open, handleClick }: NewGameProps) => {
     reset();
   };
 
-  if (loading) return <>Loading</>;
+  if (!boards) return <></>;
+  console.log({ boards });
 
-  if (boards && boards.length > 0)
+  if (boards.length > 0)
     return (
       <Dialog open={open} onClose={handleClick}>
         <Box sx={DialogStyle}>
+          <DialogTitle>Games</DialogTitle>
           {!id || id === "" ? (
             boards
               .filter((board) => !board.isGameOver)
               .map((board, i) => {
                 return (
                   <Button key={board._id} onClick={() => setId(board._id)}>
-                    Game {i}
+                    Game {i + 1} - By {board.startedBy.username}
                   </Button>
                 );
               })
@@ -81,6 +93,19 @@ export const JoinGame = ({ open, handleClick }: NewGameProps) => {
             />
           )}
         </Box>
+      </Dialog>
+    );
+  else
+    return (
+      <Dialog open={open} onClose={handleClick}>
+        <DialogTitle>No Games Found</DialogTitle>
+        <DialogContent>
+          No available games found. Please start new game or try again in some
+          time.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClick}>Close</Button>
+        </DialogActions>
       </Dialog>
     );
 };

@@ -1,5 +1,5 @@
 import { BoardService } from "@/services/boards";
-import { Box, Button, Dialog, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { DialogButton, DialogStyle } from "./style";
 
@@ -12,16 +12,16 @@ export const NewGame = ({ open, handleClick }: NewGameProps) => {
   const navigate = useNavigate();
 
   const handleNewClick = async () => {
-    const id = (await BoardService.start())._id;
+    const game = await BoardService.start();
     handleClick();
-    if (id) navigate("/board/" + id);
+    if (game) navigate("/board/" + game._id);
   };
 
   return (
     <Dialog open={open} onClose={handleClick}>
       <Box sx={DialogStyle}>
-        <Typography>Start new game?</Typography>
-        <Box display={"flex"} flexDirection={"row"} gap={1}>
+        <DialogTitle>Start new game?</DialogTitle>
+        <DialogActions>
           <Button
             sx={DialogButton}
             variant="contained"
@@ -32,7 +32,7 @@ export const NewGame = ({ open, handleClick }: NewGameProps) => {
           <Button sx={DialogButton} variant="contained" onClick={handleClick}>
             Close
           </Button>
-        </Box>
+        </DialogActions>
       </Box>
     </Dialog>
   );

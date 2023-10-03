@@ -26,7 +26,7 @@ export const Profile = () => {
       {user.username && user.username !== "" ? (
         <>
           <Avatar onClick={handleClick} alt={user.username} sx={ProfileStyle}>
-            {user.username?.charAt(0)?.toUpperCase()}
+            {user.username?.charAt(0)}
           </Avatar>
           {userEl && (
             <ClickAwayListener

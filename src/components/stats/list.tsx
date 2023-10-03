@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToTop } from "../interface/common";
 import { StatsButtton, StatsContainer, StatsGrid } from "./style";
 import { StatType } from "./type";
 
@@ -75,6 +76,7 @@ export const Stats = () => {
             </Table>
           </Grid>
         ))}
+      <ToTop />
     </Grid>
   );
 };

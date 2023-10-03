@@ -43,3 +43,27 @@ export const BoardGames: SxProps = {
       "0rem 0rem 0.25rem 0.25rem #00000033, 0rem 0rem 0.25rem 0.25rem #FF000033",
   },
 };
+
+export const KeyBoxUnit: SxProps = {
+  position: "absolute",
+  bottom: 0,
+  right: 0,
+  padding: 1,
+  gap: 1,
+  margin: 2,
+  borderRadius: 2,
+  width: "20ch",
+  display: "flex",
+  flexDirection: "column",
+  backgroundColor: "white",
+  alignContent: "center",
+  alignItems: "start",
+  boxShadow: "0 0 1px 1px #FF000033, 0 0 1px 1px #FF000066",
+};
+
+export const ReturnButton: SxProps = {
+  width: "fit-content",
+  position: "absolute",
+  bottom: 0,
+  right: 0,
+};
