@@ -1,5 +1,5 @@
 import { useAuth } from "@/hooks/auth";
-import { BoardService } from "@/services/boards";
+import { BoardService } from "@/services";
 import {
   Button,
   Grid,

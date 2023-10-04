@@ -15,7 +15,7 @@ class BoardServiceClass {
       });
   };
 
-  getID = async (id: string) => {
+  getByID = async (id: string) => {
     return httpService
       .get("/board/" + id)
       .then((res) => res.data)

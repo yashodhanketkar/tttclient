@@ -1,4 +1,4 @@
-import { BoardService } from "@/services/boards";
+import { BoardService } from "@/services";
 import { Box, Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { DialogButton, DialogStyle } from "./style";

@@ -1,4 +1,4 @@
-import { BoardService } from "@/services/boards";
+import { BoardService } from "@/services";
 import {
   Box,
   Button,

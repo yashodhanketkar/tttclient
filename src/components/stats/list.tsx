@@ -1,4 +1,4 @@
-import { StatService } from "@/services/stats";
+import { StatService } from "@/services";
 import {
   Button,
   Grid,

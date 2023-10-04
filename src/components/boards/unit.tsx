@@ -1,4 +1,4 @@
-import { BoardService } from "@/services/boards";
+import { BoardService } from "@/services";
 import ContentCopy from "@mui/icons-material/ContentCopy";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import {
@@ -53,7 +53,7 @@ export const Board = () => {
 
   useEffect(() => {
     const apiData = async () => {
-      const data: BoardType = await BoardService.getID(id as string);
+      const data: BoardType = await BoardService.getByID(id as string);
       if (data) {
         if (data.isGameOver) {
           setOpen(true);
