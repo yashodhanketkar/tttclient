@@ -41,6 +41,11 @@ export const Board = () => {
 
   websock.onmessage = (e) => {
     setSocketData(JSON.parse(e.data));
+    setSnackAlert({
+      message: "Player two joined",
+      severity: "success",
+    });
+    setOpen(true);
   };
 
   useEffect(() => {

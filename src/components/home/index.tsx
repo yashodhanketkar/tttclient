@@ -1,9 +1,10 @@
 import { useAuth } from "@/hooks/auth";
 import { Box, Button, Link, Typography } from "@mui/material";
 import { useState } from "react";
+import { NavLink as RouterLink } from "react-router-dom";
 import { JoinGame } from "./join";
 import { NewGame } from "./new";
-import { FlexCol, GameInput } from "./style";
+import { FlexCol, GameInput, RouterLinkStyle } from "./style";
 
 export const Home = () => {
   const { user } = useAuth();
@@ -17,7 +18,11 @@ export const Home = () => {
     <Box sx={FlexCol}>
       <Box component="header" display={"flex"} flexDirection={"column"}>
         <Typography variant="h3">Welcome to tictactoe</Typography>
-        <Typography variant="subtitle1" flexGrow={1} textAlign={"end"}>
+        <Typography
+          variant="subtitle1"
+          paddingX={{ xs: 1, md: 0 }}
+          textAlign={"end"}
+        >
           powered by MUI
         </Typography>
       </Box>
@@ -44,12 +49,12 @@ export const Home = () => {
       {(!user || !user.id) && (
         <Typography>
           {"Please "}
-          <Link component={"a"} href="/register">
-            register
+          <Link sx={RouterLinkStyle} component={RouterLink} to="/login">
+            login
           </Link>
           {" or "}
-          <Link component={"a"} href="/login">
-            login
+          <Link sx={RouterLinkStyle} component={RouterLink} to="/register">
+            register
           </Link>
           {" to access."}
         </Typography>

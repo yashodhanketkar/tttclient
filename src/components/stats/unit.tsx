@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Container,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -71,65 +72,67 @@ export const Stat = () => {
 
   return (
     <Container>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell colSpan={2}>
-              <Typography variant="h4">{stat.username}'s stats</Typography>
-            </TableCell>
-            <TableCell>
-              <Button
-                variant="outlined"
-                sx={{ ...StatsButtton, textTransform: "none" }}
-                onClick={() => navigate("/stats")}
-              >
-                Return
-              </Button>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableCell>
-              <Typography>Wins</Typography>
-            </TableCell>
-            <TableCell>{stat.win} wins</TableCell>
-            <TableCell>{(stat.winRate * 100).toFixed(2)}%</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Losses</TableCell>
-            <TableCell>{stat.loss} losses</TableCell>
-            <TableCell>{(stat.lossRate * 100).toFixed(2)}%</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Draws</TableCell>
-            <TableCell>{stat.draw} Draws</TableCell>
-            <TableCell>{(stat.draw * 100).toFixed(2)}%</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell colSpan={3}>
-              <Typography variant="h5">{stat.username}'s boards</Typography>
-            </TableCell>
-          </TableRow>
-          {stat.boards.map((board, i) => (
-            <TableRow key={board._id}>
-              <TableCell>{i + 1}</TableCell>
-              <TableCell>
-                {board.isGameOver
-                  ? board.hasWinner
-                    ? "Won by " + board.winner.username
-                    : "Draw"
-                  : "In progress"}
+      <Paper>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell colSpan={2}>
+                <Typography variant="h4">{stat.username}'s stats</Typography>
               </TableCell>
               <TableCell>
-                <Button onClick={() => navigate("/board/" + board._id)}>
-                  Go To
+                <Button
+                  variant="outlined"
+                  sx={{ ...StatsButtton, textTransform: "none" }}
+                  onClick={() => navigate("/stats")}
+                >
+                  Return
                 </Button>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <Typography>Wins</Typography>
+              </TableCell>
+              <TableCell>{stat.win} wins</TableCell>
+              <TableCell>{(stat.winRate * 100).toFixed(2)}%</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Losses</TableCell>
+              <TableCell>{stat.loss} losses</TableCell>
+              <TableCell>{(stat.lossRate * 100).toFixed(2)}%</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Draws</TableCell>
+              <TableCell>{stat.draw} Draws</TableCell>
+              <TableCell>{(stat.draw * 100).toFixed(2)}%</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={3}>
+                <Typography variant="h5">{stat.username}'s boards</Typography>
+              </TableCell>
+            </TableRow>
+            {stat.boards.map((board, i) => (
+              <TableRow key={board._id}>
+                <TableCell>{i + 1}</TableCell>
+                <TableCell>
+                  {board.isGameOver
+                    ? board.hasWinner
+                      ? "Won by " + board.winner.username
+                      : "Draw"
+                    : "In progress"}
+                </TableCell>
+                <TableCell>
+                  <Button onClick={() => navigate("/board/" + board._id)}>
+                    Go To
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
       <ToTop />
     </Container>
   );

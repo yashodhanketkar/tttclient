@@ -2,6 +2,7 @@ import { StatService } from "@/services/stats";
 import {
   Button,
   Grid,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -33,47 +34,49 @@ export const Stats = () => {
     <Grid container sx={StatsContainer}>
       {stats.length > 0 &&
         stats.map((stat) => (
-          <Grid item key={stat.username} xs={5} sx={StatsGrid}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell colSpan={2}>
-                    <Typography variant="h5">{stat.username}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    {stat.win}/{stat.loss}/{stat.draw}
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Wins</TableCell>
-                  <TableCell>{stat.win} wins</TableCell>
-                  <TableCell>{stat.winRate}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Loss</TableCell>
-                  <TableCell>{stat.loss} losses</TableCell>
-                  <TableCell>{stat.lossRate}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Draws</TableCell>
-                  <TableCell>{stat.draw} draws</TableCell>
-                  <TableCell>{stat.drawRate}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell colSpan={3}>
-                    <Button
-                      onClick={() => navigate(stat._id)}
-                      variant="contained"
-                      sx={StatsButtton}
-                    >
-                      View Details
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+          <Grid item key={stat.username} xs={12} md={5} sx={StatsGrid}>
+            <Paper>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell colSpan={2}>
+                      <Typography variant="h5">{stat.username}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      {stat.win}/{stat.loss}/{stat.draw}
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Wins</TableCell>
+                    <TableCell>{stat.win} wins</TableCell>
+                    <TableCell>{stat.winRate}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Loss</TableCell>
+                    <TableCell>{stat.loss} losses</TableCell>
+                    <TableCell>{stat.lossRate}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Draws</TableCell>
+                    <TableCell>{stat.draw} draws</TableCell>
+                    <TableCell>{stat.drawRate}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={3}>
+                      <Button
+                        onClick={() => navigate(stat._id)}
+                        variant="contained"
+                        sx={StatsButtton}
+                      >
+                        View Details
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Paper>
           </Grid>
         ))}
       <ToTop />

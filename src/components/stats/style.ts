@@ -26,7 +26,14 @@ export const StatsButtton: SxProps = {
 
 export const StatsContainer: SxProps = {
   justifyContent: "space-evenly",
-  margin: 1,
+  margin: {
+    xs: 4,
+    md: 1,
+  },
+  gap: {
+    xs: 4,
+    md: 0,
+  },
   width: "auto",
 };
 

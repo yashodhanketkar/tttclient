@@ -2,9 +2,10 @@ import { SxProps } from "@mui/material";
 
 export const BoardUnitButton: SxProps = {
   width: "100%",
+  height: "100%",
   aspectRatio: 1,
   border: "1px solid",
-  borderColor: "primary.main",
+  // borderColor: "primary.main",
   fontSize: "3em",
 };
 
@@ -13,7 +14,8 @@ export const BoardUnitGrid: SxProps = {
 };
 
 export const BoardUnitContainer: SxProps = {
-  width: "50%",
+  maxWidth: "50%",
+  minWidth: "fit-content",
   marginX: "auto",
 };
 
@@ -37,6 +39,12 @@ export const BoardContainer: SxProps = {
 
 export const BoardGames: SxProps = {
   boxShadow: "0rem 0rem 0.1rem 0.1rem #00000033",
+  minWidth: "fit-content",
+  maxWidth: "80%",
+  marginX: {
+    xs: 4,
+    md: 0,
+  },
   borderRadius: 1,
   ":hover": {
     boxShadow:
@@ -63,7 +71,14 @@ export const KeyBoxUnit: SxProps = {
 
 export const ReturnButton: SxProps = {
   width: "fit-content",
-  position: "absolute",
+  position: {
+    xs: "relative",
+    md: "absolute",
+  },
+  marginY: {
+    xs: 4,
+    md: 0,
+  },
   bottom: 0,
   right: 0,
 };

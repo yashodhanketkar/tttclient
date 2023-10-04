@@ -1,18 +1,22 @@
 import { SxProps } from "@mui/material";
 
 export const ProfileStyle: SxProps = {
-  color: "text.secondary",
-  backgroundColor: "primary.main",
-  borderWidth: "1px",
-  borderStyle: "solid",
-  borderColor: "text.main",
+  color: "red",
+  backgroundColor: "white",
+  fontWeight: 700,
   height: "2.5rem",
   width: "2.5rem",
   marginX: "0.5rem",
+  ":hover": {
+    color: "red",
+    backgroundColor: "white",
+    boxShadow: "0 0 1rem 0.1rem white",
+  },
 };
 
 export const NavLinkStyle: SxProps = {
   color: "text.secondary",
+  fontWeight: 600,
 };
 
 export const ToolBarStyle: SxProps = {
@@ -20,8 +24,11 @@ export const ToolBarStyle: SxProps = {
 };
 
 export const PopperStyle: SxProps = {
-  marginTop: 0.5,
+  display: "flex",
+  flexDirection: "column",
+  gap: 1,
   padding: 1,
+  marginTop: 0.5,
   backgroundColor: "white",
   borderRadius: 1,
 };
