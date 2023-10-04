@@ -1,7 +1,10 @@
 import { AuthSerivce } from "@/services";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { PasswordToggle } from "./common";
 import {
+  AuthHeading,
   FormButton,
   FormContainer,
   FormElements,
@@ -20,6 +23,9 @@ export const Login = () => {
     formState: { errors },
   } = useForm<User>();
 
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const togglePasswordVisibility = () => setPasswordVisible((prev) => !prev);
+
   const onSubmit: SubmitHandler<User> = async (user) => {
     await AuthSerivce.login(user);
   };
@@ -31,7 +37,7 @@ export const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
         sx={FormContainer}
       >
-        <Typography variant="h5" fontWeight={600} textAlign="center">
+        <Typography variant="h5" sx={AuthHeading}>
           Login
         </Typography>
         <TextField
@@ -45,9 +51,17 @@ export const Login = () => {
         />
         <TextField
           placeholder="password"
-          type="password"
+          type={passwordVisible ? "text" : "password"}
           sx={FormElements}
-          InputProps={InputPropsStyle}
+          InputProps={{
+            sx: InputPropsStyle.sx,
+            endAdornment: (
+              <PasswordToggle
+                passwordVisible={passwordVisible}
+                togglePasswordVisibility={togglePasswordVisibility}
+              />
+            ),
+          }}
           {...register("password", { required: true })}
           error={Boolean(errors.password)}
           helperText={errors.password && "Field is required"}

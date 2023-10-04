@@ -17,9 +17,12 @@ export const Home = () => {
   return (
     <Box sx={FlexCol}>
       <Box component="header" display={"flex"} flexDirection={"column"}>
-        <Typography variant="h3">Welcome to tictactoe</Typography>
+        <Typography color="text.main" variant="h3">
+          Welcome to tictactoe
+        </Typography>
         <Typography
           variant="subtitle1"
+          color="text.main"
           paddingX={{ xs: 1, md: 0 }}
           textAlign={"end"}
         >
@@ -47,7 +50,7 @@ export const Home = () => {
         </Button>
       </Box>
       {(!user || !user.id) && (
-        <Typography>
+        <Typography color="text.main">
           {"Please "}
           <Link sx={RouterLinkStyle} component={RouterLink} to="/login">
             login

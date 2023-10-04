@@ -24,12 +24,18 @@ export const NewGame = ({ open, handleClick }: NewGameProps) => {
         <DialogActions>
           <Button
             sx={DialogButton}
+            color="success"
             variant="contained"
             onClick={handleNewClick}
           >
             Start
           </Button>
-          <Button sx={DialogButton} variant="contained" onClick={handleClick}>
+          <Button
+            sx={DialogButton}
+            color="error"
+            variant="contained"
+            onClick={handleClick}
+          >
             Close
           </Button>
         </DialogActions>

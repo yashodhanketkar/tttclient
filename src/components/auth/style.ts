@@ -20,6 +20,7 @@ export const FormButton: SxProps = {
   ...FormElements,
   paddingY: 2,
   borderRadius: 2,
+  fontWeight: 600,
 };
 
 export const InputPropsStyle = {
@@ -27,4 +28,10 @@ export const InputPropsStyle = {
     borderRadius: 2,
     backgroundColor: "white",
   },
+};
+
+export const AuthHeading: SxProps = {
+  fontWeight: 600,
+  textAlign: "center",
+  color: "text.main",
 };

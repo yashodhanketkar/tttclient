@@ -36,16 +36,19 @@ export const Board = () => {
   const [snackAlert, setSnackAlert] = useState<TAlert | null>(null);
   const { id } = useParams();
   const [socketData, setSocketData] = useState("");
-  const websock = useMemo(() => new WebSocket("ws://127.0.0.1:5555/"), []);
+  const websock = useMemo(() => new WebSocket("ws://192.168.1.4:5555/"), []);
   const navigate = useNavigate();
 
   websock.onmessage = (e) => {
-    setSocketData(JSON.parse(e.data));
-    setSnackAlert({
-      message: "Player two joined",
-      severity: "success",
-    });
-    setOpen(true);
+    const scdata = JSON.parse(e.data);
+    setSocketData(scdata);
+    if (scdata?.message === "Player two joined") {
+      setSnackAlert({
+        message: "Player two joined",
+        severity: "success",
+      });
+      setOpen(true);
+    }
   };
 
   useEffect(() => {
