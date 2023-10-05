@@ -10,6 +10,7 @@ import {
   FormElements,
   InputPropsStyle,
 } from "./style";
+import {useNavigate} from "react-router-dom";
 
 type User = {
   username: string;
@@ -27,11 +28,13 @@ export const Register = () => {
 
   const [cnfMessage, setCnfMessage] = useState("Field is required");
   const [passwordVisible, setPasswordVisible] = useState(false);
+	const navigate = useNavigate()
 
   const togglePasswordVisibility = () => setPasswordVisible((prev) => !prev);
 
   const onSubmit: SubmitHandler<User> = async (user) => {
-    await AuthSerivce.login(user);
+		const data = await AuthSerivce.register(user);
+		if (data) return navigate("/login")
   };
 
   return (

@@ -7,13 +7,9 @@ type AuthProps = {
 
 class AuthSerivceClass {
   register = async (props: AuthProps) => {
-    httpService.post("/user/register", { ...props }).then((res) => {
-      const data = res.data;
-      if ((data.message as string).includes("Welcome")) {
-        localStorage.setItem("token", data.token[0]);
-        location.href = "/";
-      }
-    });
+		return httpService.post("/user/register", { ...props }).then((res) => res.data).catch((err: Error) => {
+			console.log("Failed to register ", err)
+		});
   };
 
   login = async (props: AuthProps) => {

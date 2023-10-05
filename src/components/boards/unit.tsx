@@ -29,6 +29,9 @@ type TAlert = {
   severity: AlertColor;
 };
 
+const WebSocketURL: string | undefined = import.meta.env.VITE_BASE_URL_WS;
+if (!WebSocketURL) throw new Error("Incorrect webscoket connection string");
+
 export const Board = () => {
   const [board, setBoard] = useState<BoardType>();
   const [loading, setLoading] = useState(true);
@@ -36,7 +39,7 @@ export const Board = () => {
   const [snackAlert, setSnackAlert] = useState<TAlert | null>(null);
   const { id } = useParams();
   const [socketData, setSocketData] = useState("");
-  const websock = useMemo(() => new WebSocket("ws://192.168.1.4:5555/"), []);
+  const websock = useMemo(() => new WebSocket(WebSocketURL), []);
   const navigate = useNavigate();
 
   websock.onmessage = (e) => {

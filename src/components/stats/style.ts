@@ -30,10 +30,7 @@ export const StatsContainer: SxProps = {
     xs: 4,
     md: 1,
   },
-  gap: {
-    xs: 4,
-    md: 0,
-  },
+  rowGap: 4,
   width: "auto",
 };
 
