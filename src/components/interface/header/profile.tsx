@@ -1,6 +1,4 @@
 import { Logout } from "@/components/logout";
-import { useAuth } from "@/hooks/auth";
-import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,19 +12,11 @@ import {
 } from "@/components/ui/dialog";
 
 export const Profile = () => {
-  const { user } = useAuth();
-  if (!user || !user.id) return <NavLink to="/login">Login</NavLink>;
-
   return (
     <>
       <Dialog>
         <DialogTrigger>
-          <div className="flex flex-col gap-1 text-sm w-[10vw] cursor-pointer">
-            <div className="leading-none font-medium text-left">Logout</div>
-            <div className="line-clamp-2 text-muted-foreground text-left">
-              Proceed to logout
-            </div>
-          </div>
+          <NavDresser name="Logout">Logout from the app</NavDresser>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -46,5 +36,22 @@ export const Profile = () => {
         </DialogContent>
       </Dialog>
     </>
+  );
+};
+
+const NavDresser = ({
+  name,
+  children,
+}: {
+  name: string;
+  children: string | React.ReactNode;
+}) => {
+  return (
+    <div className="flex flex-col gap-1 text-sm w-[10vw] cursor-pointer">
+      <div className="leading-none font-medium text-left">{name}</div>
+      <div className="line-clamp-2 text-muted-foreground text-left">
+        {children}
+      </div>
+    </div>
   );
 };

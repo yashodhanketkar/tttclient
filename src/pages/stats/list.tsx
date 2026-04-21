@@ -1,7 +1,7 @@
 import { StatService } from "@/services";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToTop } from "../interface/common";
+import { ToTop } from "@/components/interface/common";
 import { type StatType } from "@/components/types";
 
 export const Stats = () => {

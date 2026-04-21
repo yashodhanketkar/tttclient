@@ -1,4 +1,3 @@
-import { useAuth } from "@/hooks/auth";
 import { NavLink } from "react-router-dom";
 import {
   NavigationMenu,
@@ -8,39 +7,27 @@ import {
   NavigationMenuContent,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
-import { Profile } from "./profile";
+import { useAuth } from "@/hooks/auth";
+import { menu_config } from "./menu";
 
 export const NavBar = () => {
   const { user } = useAuth();
-
-  if (!user.id || user.id === "") return <></>;
+  const sections = user?.id ? menu_config.auth : menu_config.guest;
 
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Games</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ListItem
-              to="/stats"
-              title="Stats"
-              children="Statistics of your games"
-            />
-            <ListItem
-              to="/board"
-              title="Board"
-              children="Manage or join a board"
-            />
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Account</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <NavigationMenuLink>
-              <Profile />
-            </NavigationMenuLink>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+        {sections.map((s) => (
+          <NavigationMenuItem key={s.label}>
+            <NavigationMenuTrigger>{s.label}</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              {s.items?.map((item) => (
+                <ListItem key={item.to} {...item} />
+              ))}
+              {s.custom && <NavigationMenuLink>{s.custom}</NavigationMenuLink>}
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        ))}
       </NavigationMenuList>
     </NavigationMenu>
   );
@@ -49,20 +36,19 @@ export const NavBar = () => {
 const ListItem = ({
   to,
   title,
-  children,
+  description,
 }: {
   to: string;
   title: string;
-  children: React.ReactNode;
-}) => {
-  return (
-    <NavigationMenuLink>
-      <NavLink to={to}>
-        <div className="flex flex-col gap-1 text-sm w-[10vw]">
-          <div className="leading-none font-medium">{title}</div>
-          <div className="line-clamp-2 text-muted-foreground">{children}</div>
-        </div>
-      </NavLink>
-    </NavigationMenuLink>
-  );
-};
+  description: string;
+}) => (
+  <NavigationMenuLink>
+    <NavLink
+      to={to}
+      className="flex flex-col gap-1 text-sm w-[10vw] p-2 hover:bg-accent"
+    >
+      <div className="leading-none font-medium">{title}</div>
+      <div className="line-clamp-2 text-muted-foreground">{description}</div>
+    </NavLink>
+  </NavigationMenuLink>
+);

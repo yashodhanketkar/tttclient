@@ -1,9 +1,11 @@
 import { useAuth } from "@/hooks/auth";
-import { Login } from "@/views/auth/login";
-import { Register } from "@/views/auth/register";
-import { BoardIDPage, BoardPage } from "@/views/board";
-import { HomePage } from "@/views/home";
-import { StatsIDPage, StatsPage } from "@/views/stats";
+import { Login } from "@/pages/auth/login";
+import { Register } from "@/pages/auth/register";
+import { Boards } from "@/pages/board/list";
+import { Board } from "@/pages/board/unit";
+import { Home } from "@/pages/home";
+import { Stats } from "@/pages/stats/list";
+import { Stat } from "@/pages/stats/unit";
 import { Outlet, Route, Routes } from "react-router-dom";
 
 export const MainRouter = () => {
@@ -12,7 +14,7 @@ export const MainRouter = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Home />} />
         {!user.id || user.id === "" ? (
           <>
             <Route path="/login" element={<Login />} />
@@ -20,10 +22,10 @@ export const MainRouter = () => {
           </>
         ) : (
           <>
-            <Route path="/stats" element={<StatsPage />} />
-            <Route path="/stats/:id" element={<StatsIDPage />} />
-            <Route path="/board" element={<BoardPage />} />
-            <Route path="/board/:id" element={<BoardIDPage />} />
+            <Route path="/stats" element={<Stats />} />
+            <Route path="/stats/:id" element={<Stat />} />
+            <Route path="/board" element={<Boards />} />
+            <Route path="/board/:id" element={<Board />} />
           </>
         )}
         <Route path="*" element={<>404 | Page not found</>} />

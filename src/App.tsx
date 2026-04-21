@@ -1,6 +1,6 @@
 import { AuthWrapper } from "./context/auth";
 import { MainRouter } from "./routes";
-import { Layout } from "./views/layout";
+import { Layout } from "./routes/layout";
 
 const App = () => {
   return (

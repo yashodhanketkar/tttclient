@@ -42,10 +42,10 @@ export const Login = () => {
   };
 
   return (
-    <Card className="w-1/2 md:w-1/4 mx-auto">
+    <Card className="w-11/12 lg:w-1/4 mx-auto mt-[45vh] transform -translate-y-1/2">
       <CardHeader>
         <CardTitle>Login</CardTitle>
-        <p>Please login to continue</p>
+        <CardDescription>Please login to continue</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="container">

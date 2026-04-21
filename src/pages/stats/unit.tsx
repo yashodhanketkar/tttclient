@@ -1,8 +1,8 @@
 import { StatService } from "@/services";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ToTop } from "../interface/common";
-import type { StatType } from "./type";
+import { ToTop } from "@/components/interface/common";
+import type { StatType } from "@/components/types";
 
 export const Stat = () => {
   const { id } = useParams();
