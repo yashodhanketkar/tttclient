@@ -1,63 +1,50 @@
-import { Logout } from "@/components/auth/logout";
+import { Logout } from "@/components/logout";
 import { useAuth } from "@/hooks/auth";
-import { Avatar, Box, Button, ClickAwayListener, Popper } from "@mui/material";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { PopperElementStyle, PopperStyle, ProfileStyle } from "./style";
+import { NavLink } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 export const Profile = () => {
   const { user } = useAuth();
-  const [userEl, setUserEl] = useState<HTMLElement | null>(null);
-  const navigate = useNavigate();
-
-  const handleClick = (e: React.MouseEvent | TouchEvent | MouseEvent) => {
-    setUserEl((e as React.MouseEvent<HTMLElement>).currentTarget);
-  };
-
-  const handleClickAway = () => {
-    setUserEl(null);
-  };
-
-  const open = Boolean(userEl);
-  const id = open ? "user" : undefined;
+  if (!user || !user.id) return <NavLink to="/login">Login</NavLink>;
 
   return (
     <>
-      {user.username && user.username !== "" ? (
-        <>
-          <Avatar onClick={handleClick} alt={user.username} sx={ProfileStyle}>
-            {user.username?.charAt(0)}
-          </Avatar>
-          {userEl && (
-            <ClickAwayListener
-              mouseEvent="onMouseDown"
-              touchEvent="onTouchStart"
-              onClickAway={handleClickAway}
-            >
-              <Popper
-                id={id}
-                open={open}
-                anchorEl={userEl}
-                placement="bottom-end"
-              >
-                <Box sx={PopperStyle}>
-                  <Button
-                    onClick={Logout}
-                    variant="contained"
-                    sx={PopperElementStyle}
-                  >
-                    Logout
-                  </Button>
-                </Box>
-              </Popper>
-            </ClickAwayListener>
-          )}
-        </>
-      ) : (
-        <Button sx={ProfileStyle} onClick={() => navigate("/login")}>
-          Login
-        </Button>
-      )}
+      <Dialog>
+        <DialogTrigger>
+          <div className="flex flex-col gap-1 text-sm w-[10vw] cursor-pointer">
+            <div className="leading-none font-medium text-left">Logout</div>
+            <div className="line-clamp-2 text-muted-foreground text-left">
+              Proceed to logout
+            </div>
+          </div>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Logout</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to logout?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose>
+              <Button variant="outline">Close</Button>
+            </DialogClose>
+            <Button autoFocus onClick={Logout}>
+              Logout
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

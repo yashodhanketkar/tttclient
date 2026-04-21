@@ -1,20 +1,8 @@
 import { StatService } from "@/services";
-import {
-  Button,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToTop } from "../interface/common";
-import { StatsButtton, StatsContainer, StatsGrid } from "./style";
-import { StatType } from "./type";
+import { type StatType } from "@/components/types";
 
 export const Stats = () => {
   const [stats, setStats] = useState<StatType[]>([]);
@@ -31,55 +19,51 @@ export const Stats = () => {
   }, []);
 
   return (
-    <Grid container sx={StatsContainer}>
+    <div className="container">
       {stats.length > 0 &&
         stats.map((stat) => (
-          <Grid item key={stat.username} xs={12} md={5} sx={StatsGrid}>
-            <Paper>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell colSpan={2}>
-                      <Typography variant="h5">{stat.username}</Typography>
-                    </TableCell>
-                    <TableCell>
+          <div key={stat.username}>
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th colSpan={2}>
+                      <p>{stat.username}</p>
+                    </th>
+                    <th>
                       {stat.win}/{stat.loss}/{stat.draw}
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>Wins</TableCell>
-                    <TableCell>{stat.win} wins</TableCell>
-                    <TableCell>{stat.winRate}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Loss</TableCell>
-                    <TableCell>{stat.loss} losses</TableCell>
-                    <TableCell>{stat.lossRate}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Draws</TableCell>
-                    <TableCell>{stat.draw} draws</TableCell>
-                    <TableCell>{stat.drawRate}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell colSpan={3}>
-                      <Button
-                        onClick={() => navigate(stat._id)}
-                        variant="contained"
-                        sx={StatsButtton}
-                      >
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Wins</th>
+                    <th>{stat.win} wins</th>
+                    <th>{stat.winRate}</th>
+                  </tr>
+                  <tr>
+                    <th>Loss</th>
+                    <th>{stat.loss} losses</th>
+                    <th>{stat.lossRate}</th>
+                  </tr>
+                  <tr>
+                    <th>Draws</th>
+                    <th>{stat.draw} draws</th>
+                    <th>{stat.drawRate}</th>
+                  </tr>
+                  <tr>
+                    <th colSpan={3}>
+                      <button onClick={() => navigate(stat._id)}>
                         View Details
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Paper>
-          </Grid>
+                      </button>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         ))}
       <ToTop />
-    </Grid>
+    </div>
   );
 };

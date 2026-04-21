@@ -1,20 +1,9 @@
 import { useAuth } from "@/hooks/auth";
 import { BoardService } from "@/services";
-import {
-  Button,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToTop } from "../interface/common";
-import { BoardButtton, BoardContainer, BoardGames } from "./style";
-import { BoardType } from "./type";
+import { type BoardType } from "@/components/types";
 
 export const Boards = () => {
   const [boards, setBoards] = useState<BoardType[]>([]);
@@ -31,51 +20,47 @@ export const Boards = () => {
   }, []);
 
   return (
-    <Grid container sx={BoardContainer}>
+    <div className="grid">
       {boards.length > 0 &&
         boards.map((board) => (
-          <Grid item key={board._id} xs={12} md={5} sx={BoardGames}>
-            <Paper>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>{board.startedBy.username}</TableCell>
-                    <TableCell>vs</TableCell>
-                    <TableCell>{board.against?.username}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>Status</TableCell>
-                    <TableCell colSpan={2}>
+          <div key={board._id}>
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>{board.startedBy.username}</th>
+                    <th>vs</th>
+                    <th>{board.against?.username}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Status</td>
+                    <td colSpan={2}>
                       {board.isGameOver
                         ? board.hasWinner
                           ? "Won by " + board.winner.username
                           : "Draw"
                         : "In progress"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell colSpan={3}>
-                      <Button
-                        variant="contained"
-                        sx={{ ...BoardButtton, textTransform: "none" }}
-                        onClick={() => navigate("/board/" + board._id)}
-                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={3}>
+                      <button onClick={() => navigate("/board/" + board._id)}>
                         {(board.startedBy._id === id ||
                           board.against._id === id) &&
                         !board.isGameOver
                           ? "Join"
                           : "View"}
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Paper>
-          </Grid>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         ))}
       <ToTop />
-    </Grid>
+    </div>
   );
 };

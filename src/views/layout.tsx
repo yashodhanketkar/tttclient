@@ -1,6 +1,4 @@
 import { Footer, Header } from "@/components/interface";
-import { SxProps } from "@mui/material";
-import Container from "@mui/material/Container";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -8,17 +6,10 @@ type LayoutProps = {
 
 export const Layout = ({ children }: LayoutProps) => {
   return (
-    <Container maxWidth={false} sx={LayoutStyle} disableGutters>
+    <div className="min-h-screen w-screen flex flex-col justify-between">
       <Header />
-      <div className="py-4 mb-auto">{children}</div>
+      <div className="mt-4 mb-auto mx-auto container">{children}</div>
       <Footer />
-    </Container>
+    </div>
   );
-};
-
-const LayoutStyle: SxProps = {
-  minHeight: "100vh",
-  display: " flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
 };

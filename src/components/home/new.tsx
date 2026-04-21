@@ -1,7 +1,5 @@
 import { BoardService } from "@/services";
-import { Box, Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { DialogButton, DialogStyle } from "./style";
 
 type NewGameProps = {
   open: boolean;
@@ -18,28 +16,14 @@ export const NewGame = ({ open, handleClick }: NewGameProps) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClick}>
-      <Box sx={DialogStyle}>
-        <DialogTitle>Start new game?</DialogTitle>
-        <DialogActions>
-          <Button
-            sx={DialogButton}
-            color="success"
-            variant="contained"
-            onClick={handleNewClick}
-          >
-            Start
-          </Button>
-          <Button
-            sx={DialogButton}
-            color="error"
-            variant="contained"
-            onClick={handleClick}
-          >
-            Close
-          </Button>
-        </DialogActions>
-      </Box>
-    </Dialog>
+    <dialog open={open} onClose={handleClick}>
+      <div>
+        <p>Start new game?</p>
+        <div>
+          <button onClick={handleNewClick}>Start</button>
+          <button onClick={handleClick}>Close</button>
+        </div>
+      </div>
+    </dialog>
   );
 };

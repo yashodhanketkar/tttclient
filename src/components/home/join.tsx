@@ -1,25 +1,14 @@
 import { BoardService } from "@/services";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-  Typography,
-} from "@mui/material";
 import { useEffect, useState } from "react";
 import {
-  FieldErrors,
-  SubmitHandler,
-  UseFormHandleSubmit,
-  UseFormRegister,
+  type FieldErrors,
+  type SubmitHandler,
+  type UseFormHandleSubmit,
+  type UseFormRegister,
   useForm,
 } from "react-hook-form";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-import { DialogButton, DialogStyle } from "./style";
-import { BoardType } from "./types";
+import { type NavigateFunction, useNavigate } from "react-router-dom";
+import { type BoardType } from "@/components/types";
 
 type InputType = {
   key: string;
@@ -68,17 +57,17 @@ export const JoinGame = ({ open, handleClick }: NewGameProps) => {
 
   if (boards.length > 0)
     return (
-      <Dialog open={open} onClose={handleClick}>
-        <Box sx={DialogStyle}>
-          <DialogTitle>Games</DialogTitle>
+      <dialog open={open} onClose={handleClick}>
+        <div>
+          <p>Games</p>
           {!id || id === "" ? (
             boards
               .filter((board) => !board.isGameOver)
               .map((board, i) => {
                 return (
-                  <Button key={board._id} onClick={() => setId(board._id)}>
+                  <button key={board._id} onClick={() => setId(board._id)}>
                     Game {i + 1} - By {board.startedBy.username}
-                  </Button>
+                  </button>
                 );
               })
           ) : (
@@ -92,28 +81,28 @@ export const JoinGame = ({ open, handleClick }: NewGameProps) => {
               onReset={onReset}
             />
           )}
-        </Box>
-      </Dialog>
+        </div>
+      </dialog>
     );
   else
     return (
-      <Dialog open={open} onClose={handleClick}>
-        <DialogTitle>No Games Found</DialogTitle>
-        <DialogContent>
+      <dialog open={open} onClose={handleClick}>
+        <p>No Games Found</p>
+        <div>
           No available games found. Please start new game or try again in some
           time.
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClick}>Close</Button>
-        </DialogActions>
-      </Dialog>
+        </div>
+        <div>
+          <button onClick={handleClick}>Close</button>
+        </div>
+      </dialog>
     );
 };
 
 type SecondScreenProps = {
   register: UseFormRegister<InputType>;
   errors: FieldErrors<InputType>;
-  handleSubmit: UseFormHandleSubmit<InputType, undefined>;
+  handleSubmit: UseFormHandleSubmit<InputType>;
   onSubmit: SubmitHandler<InputType>;
   handleClick: () => void;
   navigate: NavigateFunction;
@@ -130,42 +119,27 @@ const SecondScreen = ({
   onReset,
 }: SecondScreenProps) => {
   return (
-    <>
-      <Typography>Join game?</Typography>
-      <TextField
-        {...register("key", { required: true })}
-        error={Boolean(errors.key)}
-        helperText={errors.key && "Key required"}
-      />
-      <Box
-        component={"form"}
-        onSubmit={handleSubmit(onSubmit)}
-        display={"flex"}
-        flexDirection={"row"}
-        gap={1}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <p>Join game?</p>
+      <textarea {...register("key", { required: true })} />
+      {errors.key && <p>{errors.key.message}</p>}
+      <button
+        onClick={() => {
+          handleClick();
+          navigate("/");
+        }}
+        type="submit"
       >
-        <Button
-          sx={DialogButton}
-          variant="contained"
-          onClick={() => {
-            handleClick();
-            navigate("/");
-          }}
-          type="submit"
-        >
-          Join
-        </Button>
-        <Button
-          sx={DialogButton}
-          variant="contained"
-          onClick={() => {
-            handleClick();
-            onReset();
-          }}
-        >
-          Close
-        </Button>
-      </Box>
-    </>
+        Join
+      </button>
+      <button
+        onClick={() => {
+          handleClick();
+          onReset();
+        }}
+      >
+        Close
+      </button>
+    </form>
   );
 };

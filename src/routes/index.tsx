@@ -1,5 +1,6 @@
 import { useAuth } from "@/hooks/auth";
-import { LoginPage, RegisterPage } from "@/views/auth";
+import { Login } from "@/views/auth/login";
+import { Register } from "@/views/auth/register";
 import { BoardIDPage, BoardPage } from "@/views/board";
 import { HomePage } from "@/views/home";
 import { StatsIDPage, StatsPage } from "@/views/stats";
@@ -14,8 +15,8 @@ export const MainRouter = () => {
         <Route path="/" element={<HomePage />} />
         {!user.id || user.id === "" ? (
           <>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </>
         ) : (
           <>

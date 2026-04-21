@@ -1,32 +1,12 @@
 import { BoardService } from "@/services";
-import ContentCopy from "@mui/icons-material/ContentCopy";
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import {
-  Alert,
-  AlertColor,
-  Box,
-  Button,
-  Container,
-  Grid,
-  Paper,
-  Snackbar,
-  Typography,
-} from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import ReactLoading from "react-loading";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  BoardUnitButton,
-  BoardUnitContainer,
-  BoardUnitGrid,
-  KeyBoxUnit,
-  ReturnButton,
-} from "./style";
-import { BoardType } from "./type";
+import type { BoardType } from "@/components/types";
 
 type TAlert = {
   message: string;
-  severity: AlertColor;
+  severity: "success" | "info" | "warning" | "error";
 };
 
 const WebSocketURL: string | undefined = import.meta.env.VITE_BASE_URL_WS;
@@ -100,79 +80,57 @@ export const Board = () => {
 
   if (loading)
     return (
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <p>
         <ReactLoading
           type="spinningBubbles"
           color="#F00"
           height={"25%"}
           width={"25%"}
         />
-      </Box>
+      </p>
     );
 
   return (
-    <Container>
-      <Paper elevation={3} sx={BoardUnitContainer}>
-        <Grid container sx={BoardUnitGrid}>
+    <div className="container">
+      <div>
+        <div className="grid">
           {board.grid.length > 0 &&
             board.grid.map((pos, i) => (
-              <Grid key={i} item xs={4}>
-                <Button
+              <div key={i}>
+                <button
                   disabled={board.isGameOver}
-                  sx={{
-                    ...BoardUnitButton,
-                    backgroundColor: pos === "" ? "transparent" : "#FFEEEE66",
-                  }}
                   onClick={() => handleSend(i, pos)}
                 >
                   {pos}
-                </Button>
-              </Grid>
+                </button>
+              </div>
             ))}
-        </Grid>
-      </Paper>
+        </div>
+      </div>
       {board.isGameOver ? (
-        <Button
-          startIcon={<KeyboardArrowLeft />}
-          sx={ReturnButton}
-          variant="contained"
-          onClick={() => navigate("/board")}
-        >
-          Return
-        </Button>
+        <button onClick={() => navigate("/board")}>Return</button>
       ) : (
         <>
           {board.numberOfPlayers !== 2 && (
-            <Box sx={KeyBoxUnit}>
-              <Typography variant="body2">Share this key</Typography>
-              <Typography variant="h6">{board.key}</Typography>
-              <Button
-                onClick={() => navigator.clipboard.writeText(board.key)}
-                endIcon={<ContentCopy />}
-                variant="contained"
-              >
+            <div>
+              <p>Share this key</p>
+              <p>{board.key}</p>
+              <button onClick={() => navigator.clipboard.writeText(board.key)}>
                 Copy
-              </Button>
-            </Box>
+              </button>
+            </div>
           )}
         </>
       )}
-      {snackAlert && (
-        <Snackbar
-          open={open}
-          autoHideDuration={2000}
-          onClose={() => setOpen(false)}
-        >
-          <Alert severity={snackAlert.severity}>{snackAlert.message}</Alert>
-        </Snackbar>
-      )}
-    </Container>
+      {/* {snackAlert && ( */}
+      {/*   <div */}
+      {/*     open={open} */}
+      {/*     autoHideDuration={2000} */}
+      {/*     onClose={() => setOpen(false)} */}
+      {/*   > */}
+      {/*     <alert severity={snackAlert.severity}>{snackAlert.message}</alert> */}
+      {/*   </div> */}
+      {/* )} */}
+    </div>
   );
 };

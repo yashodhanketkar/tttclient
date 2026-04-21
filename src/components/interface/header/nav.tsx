@@ -1,7 +1,14 @@
 import { useAuth } from "@/hooks/auth";
-import { Box, Link } from "@mui/material";
-import { NavLink as RouterLink } from "react-router-dom";
-import { NavLinkStyle } from "./style";
+import { NavLink } from "react-router-dom";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from "@/components/ui/navigation-menu";
+import { Profile } from "./profile";
 
 export const NavBar = () => {
   const { user } = useAuth();
@@ -9,13 +16,53 @@ export const NavBar = () => {
   if (!user.id || user.id === "") return <></>;
 
   return (
-    <Box display="flex" flexDirection="row" gap={1}>
-      <Link sx={NavLinkStyle} component={RouterLink} to="/board">
-        Board
-      </Link>
-      <Link sx={NavLinkStyle} component={RouterLink} to="/stats">
-        Stats
-      </Link>
-    </Box>
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Games</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ListItem
+              to="/stats"
+              title="Stats"
+              children="Statistics of your games"
+            />
+            <ListItem
+              to="/board"
+              title="Board"
+              children="Manage or join a board"
+            />
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Account</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <NavigationMenuLink>
+              <Profile />
+            </NavigationMenuLink>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+};
+
+const ListItem = ({
+  to,
+  title,
+  children,
+}: {
+  to: string;
+  title: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <NavigationMenuLink>
+      <NavLink to={to}>
+        <div className="flex flex-col gap-1 text-sm w-[10vw]">
+          <div className="leading-none font-medium">{title}</div>
+          <div className="line-clamp-2 text-muted-foreground">{children}</div>
+        </div>
+      </NavLink>
+    </NavigationMenuLink>
   );
 };

@@ -1,21 +1,8 @@
 import { StatService } from "@/services";
-import {
-  Box,
-  Button,
-  Container,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToTop } from "../interface/common";
-import { StatsButtton } from "./style";
-import { StatType } from "./type";
+import type { StatType } from "./type";
 
 export const Stat = () => {
   const { id } = useParams();
@@ -38,102 +25,77 @@ export const Stat = () => {
 
   if (!stat || !stat.username)
     return (
-      <Container>
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          marginY={4}
-          gap={2}
-          width="100%"
-        >
-          <Typography variant="h5" color="error.main">
-            Failed to fetch the data
-          </Typography>
-          <Box display="flex" flexDirection="row" gap={2}>
-            <Button
-              sx={StatsButtton}
-              variant="contained"
-              onClick={() => window.location.reload()}
-            >
-              Refresh
-            </Button>
-            <Button
-              sx={StatsButtton}
-              variant="contained"
-              onClick={() => navigate("/stats")}
-            >
-              Go back
-            </Button>
-          </Box>
-        </Box>
-      </Container>
+      <div>
+        <div>
+          <p>Failed to fetch the data</p>
+          <div className="flex flex-row gap-2">
+            <button onClick={() => window.location.reload()}>Refresh</button>
+            <button onClick={() => navigate("/stats")}>Go back</button>
+          </div>
+        </div>
+      </div>
     );
 
   return (
-    <Container>
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell colSpan={2}>
-                <Typography variant="h4">{stat.username}'s stats</Typography>
-              </TableCell>
-              <TableCell>
-                <Button
-                  variant="outlined"
-                  sx={{ ...StatsButtton, textTransform: "none" }}
-                  onClick={() => navigate("/stats")}
-                >
+    <div>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th colSpan={2}>
+                <p>{stat.username}'s stats</p>
+              </th>
+              <th>
+                <StatsButtton onClick={() => navigate("/stats")}>
                   Return
-                </Button>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>
-                <Typography>Wins</Typography>
-              </TableCell>
-              <TableCell>{stat.win} wins</TableCell>
-              <TableCell>{(stat.winRate * 100).toFixed(2)}%</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Losses</TableCell>
-              <TableCell>{stat.loss} losses</TableCell>
-              <TableCell>{(stat.lossRate * 100).toFixed(2)}%</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Draws</TableCell>
-              <TableCell>{stat.draw} Draws</TableCell>
-              <TableCell>{(stat.draw * 100).toFixed(2)}%</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={3}>
-                <Typography variant="h5">{stat.username}'s boards</Typography>
-              </TableCell>
-            </TableRow>
+                </StatsButtton>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p>Wins</p>
+              </td>
+              <td>{stat.win} wins</td>
+              <td>{(stat.winRate * 100).toFixed(2)}%</td>
+            </tr>
+            <tr>
+              <td>Losses</td>
+              <td>{stat.loss} losses</td>
+              <td>{(stat.lossRate * 100).toFixed(2)}%</td>
+            </tr>
+            <tr>
+              <td>Draws</td>
+              <td>{stat.draw} Draws</td>
+              <td>{(stat.draw * 100).toFixed(2)}%</td>
+            </tr>
+            <tr>
+              <td colSpan={3}>
+                <p>{stat.username}'s boards</p>
+              </td>
+            </tr>
             {stat.boards.map((board, i) => (
-              <TableRow key={board._id}>
-                <TableCell>{i + 1}</TableCell>
-                <TableCell>
+              <tr key={board._id}>
+                <td>{i + 1}</td>
+                <td>
                   {board.isGameOver
                     ? board.hasWinner
                       ? "Won by " + board.winner.username
                       : "Draw"
                     : "In progress"}
-                </TableCell>
-                <TableCell>
-                  <Button onClick={() => navigate("/board/" + board._id)}>
+                </td>
+                <td>
+                  <button onClick={() => navigate("/board/" + board._id)}>
                     Go To
-                  </Button>
-                </TableCell>
-              </TableRow>
+                  </button>
+                </td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
-      </Paper>
+          </tbody>
+        </table>
+      </div>
       <ToTop />
-    </Container>
+    </div>
   );
 };
