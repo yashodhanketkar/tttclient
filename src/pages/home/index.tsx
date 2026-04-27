@@ -1,15 +1,10 @@
 import { useAuth } from "@/hooks/auth";
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { JoinGame } from "./join";
 import { NewGame } from "./new";
-import { GameButton } from "./common";
 
 export const Home = () => {
   const { user } = useAuth();
-  const [joinOpen, setJoinOpen] = useState(false);
-
-  const handleJoinOpen = () => setJoinOpen((prev) => !prev);
   const loggedIn = user?.id ? true : false;
 
   return (
@@ -23,12 +18,8 @@ export const Home = () => {
         </h1>
       </div>
       <div className="w-full flex flex-col md:flex-row gap-4 justify-center">
-        <NewGame active={!loggedIn} />
-        <GameButton
-          text="Join Game"
-          onClick={handleJoinOpen}
-          disabled={!loggedIn}
-        />
+        <NewGame active={loggedIn} />
+        <JoinGame active={loggedIn} />
       </div>
       {!loggedIn && (
         <div className="text-center text-sm text-stone-800 mt-4 italic">
@@ -43,7 +34,6 @@ export const Home = () => {
           {" to access."}
         </div>
       )}
-      <JoinGame open={joinOpen} handleClick={handleJoinOpen} />
     </div>
   );
 };

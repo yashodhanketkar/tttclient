@@ -1,7 +1,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogTrigger,
   DialogClose,
   DialogHeader,
   DialogFooter,
@@ -27,7 +26,7 @@ export const NewGame = ({ active }: { active: boolean }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <GameButton
         text="New Game"
-        disabled={active}
+        disabled={!active}
         onClick={() => setOpen(true)}
       />
       <DialogContent>
