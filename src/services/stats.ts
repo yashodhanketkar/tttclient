@@ -14,7 +14,10 @@ class StatServiceClass {
   getByID = async (id: string) => {
     return httpService
       .get("/user/stats/" + id)
-      .then((res) => res.data)
+      .then((res) => {
+        console.log(res.data.data);
+        return res.data.data;
+      })
       .catch((err: Error) => {
         console.log("Failed to fetch, " + err.message);
       });

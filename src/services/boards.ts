@@ -8,7 +8,7 @@ class BoardServiceClass {
   getAll = async () => {
     return httpService
       .get("/board")
-      .then((res) => res.data)
+      .then((res) => res.data.data)
       .catch((err: Error) => {
         console.log("Failed to fetch ", err.message);
         return [];
@@ -18,23 +18,23 @@ class BoardServiceClass {
   getByID = async (id: string) => {
     return httpService
       .get("/board/" + id)
-      .then((res) => res.data)
+      .then((res) => res.data.data)
       .catch((err: Error) => console.log(err.message));
   };
 
   join = async (id: string, key: string) => {
     return httpService
       .put("/board/saved/" + id, { key })
-      .then((res) => res.data.status)
+      .then((res) => res.data.data.status)
       .catch((err: Error) => console.log("Failed to join, " + err.message));
   };
 
   start = async () => {
     return httpService
       .get("/board/new")
-      .then((res) => res.data)
+      .then((res) => res.data.data)
       .catch((err: Error) =>
-        console.log("Failed to create new board, ", err.message)
+        console.log("Failed to create new board, ", err.message),
       );
   };
 

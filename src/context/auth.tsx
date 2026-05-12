@@ -31,7 +31,7 @@ export const AuthWrapper = ({ children }: AuthWrapperProps) => {
   useEffect(() => {
     const apiData = async () => {
       const data = await AuthSerivce.me();
-      if (data) setUser(data);
+      if (data) setUser(data.data);
     };
     apiData();
   }, []);

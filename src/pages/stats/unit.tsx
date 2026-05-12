@@ -46,9 +46,7 @@ export const Stat = () => {
                 <p>{stat.username}'s stats</p>
               </th>
               <th>
-                <StatsButtton onClick={() => navigate("/stats")}>
-                  Return
-                </StatsButtton>
+                <button onClick={() => navigate("/stats")}>Return</button>
               </th>
             </tr>
           </thead>

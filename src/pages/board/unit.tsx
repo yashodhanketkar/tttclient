@@ -36,13 +36,13 @@ export const Board = () => {
 
   useEffect(() => {
     const apiData = async () => {
-      const data: BoardType = await BoardService.getByID(id as string);
+      const data = await BoardService.getByID(id as string);
       if (data) {
         if (data.isGameOver) {
           setOpen(true);
           setSnackAlert({ message: "Game is over", severity: "info" });
         }
-        setBoard(data);
+        setBoard(data.board);
       }
     };
     apiData();
@@ -93,17 +93,17 @@ export const Board = () => {
   return (
     <div className="container">
       <div>
-        <div className="grid">
+        <div className="grid bg-border gap-1 grid-cols-3 w-1/3 mx-auto shadow">
           {board.grid.length > 0 &&
             board.grid.map((pos, i) => (
-              <div key={i}>
-                <button
-                  disabled={board.isGameOver}
-                  onClick={() => handleSend(i, pos)}
-                >
-                  {pos}
-                </button>
-              </div>
+              <button
+                className="bg-card aspect-square"
+                key={i}
+                disabled={board.isGameOver}
+                onClick={() => handleSend(i, pos)}
+              >
+                {pos}
+              </button>
             ))}
         </div>
       </div>

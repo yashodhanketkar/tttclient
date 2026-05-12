@@ -53,6 +53,7 @@ export const JoinGame = ({ active }: { active: boolean }) => {
 
   const onSubmit: SubmitHandler<InputType> = async (data) => {
     const res = await BoardService.join(id, data.key);
+    console.log(res);
     if (res) navigate("/board/" + id);
   };
 
@@ -64,11 +65,6 @@ export const JoinGame = ({ active }: { active: boolean }) => {
     setId("");
     reset();
   };
-
-  console.log({
-    active: active,
-    "boards?.length": boards?.length,
-  });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

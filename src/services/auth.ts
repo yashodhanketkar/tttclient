@@ -9,20 +9,21 @@ class AuthSerivceClass {
   register = async (props: AuthProps) => {
     return httpService
       .post("/user/register", { ...props })
-      .then((res) => res.data)
+      .then((res) => res.data.data)
       .catch((err: Error) => {
         console.log("Failed to register ", err);
       });
   };
 
   login = async (props: AuthProps) => {
-    httpService.post("/user/login", { ...props }).then((res) => {
-      const data = res.data;
-      if ((data.message as string).includes("Welcome")) {
-        localStorage.setItem("token", data.token[0]);
-        location.href = "/";
-      }
-    });
+    httpService
+      .post("/user/login", { ...props })
+      .then((res) => res.data)
+      .then((data) => {
+        if (data.message !== "User logged in") return;
+        localStorage.setItem("token", data.data.token);
+        window.location.href = "/";
+      });
   };
 
   me = async () => {

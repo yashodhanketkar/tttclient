@@ -12,11 +12,13 @@ export const Stats = () => {
     const apiData = async () => {
       const data = await StatService.getAll();
       if (data) {
-        setStats(data);
+        setStats(data.data);
       }
     };
     apiData();
   }, []);
+
+  console.log(stats);
 
   return (
     <div className="container">
@@ -53,7 +55,7 @@ export const Stats = () => {
                   </tr>
                   <tr>
                     <th colSpan={3}>
-                      <button onClick={() => navigate(stat._id)}>
+                      <button onClick={() => navigate("/stats/" + stat._id)}>
                         View Details
                       </button>
                     </th>
