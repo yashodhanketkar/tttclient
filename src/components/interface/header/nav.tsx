@@ -1,13 +1,15 @@
 import { NavLink } from "react-router-dom";
+
 import {
   NavigationMenu,
+  NavigationMenuContent,
   NavigationMenuItem,
+  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 import { useAuth } from "@/hooks/auth";
+
 import { menu_config } from "./menu";
 
 export const NavBar = () => {
@@ -33,20 +35,9 @@ export const NavBar = () => {
   );
 };
 
-const ListItem = ({
-  to,
-  title,
-  description,
-}: {
-  to: string;
-  title: string;
-  description: string;
-}) => (
+const ListItem = ({ to, title, description }: { to: string; title: string; description: string }) => (
   <NavigationMenuLink>
-    <NavLink
-      to={to}
-      className="flex flex-col gap-1 text-sm w-[10vw] p-2 hover:bg-accent"
-    >
+    <NavLink to={to} className="flex flex-col gap-1 text-sm w-[10vw] p-2 hover:bg-accent">
       <div className="leading-none font-medium">{title}</div>
       <div className="line-clamp-2 text-muted-foreground">{description}</div>
     </NavLink>

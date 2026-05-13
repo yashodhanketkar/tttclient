@@ -1,5 +1,7 @@
-import { useAuth } from "@/hooks/auth";
 import { NavLink } from "react-router-dom";
+
+import { useAuth } from "@/hooks/auth";
+
 import { JoinGame } from "./join";
 import { NewGame } from "./new";
 

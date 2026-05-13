@@ -1,14 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-export const GameButton = ({
-  disabled,
-  text,
-  onClick,
-}: {
-  disabled?: boolean;
-  text: string;
-  onClick?: () => void;
-}) => {
+export const GameButton = ({ disabled, text, onClick }: { disabled?: boolean; text: string; onClick?: () => void }) => {
   return (
     <Button
       onClick={onClick}

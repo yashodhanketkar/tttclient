@@ -1,3 +1,5 @@
+import { Outlet, Route, Routes } from "react-router-dom";
+
 import { useAuth } from "@/hooks/auth";
 import { Login } from "@/pages/auth/login";
 import { Register } from "@/pages/auth/register";
@@ -6,7 +8,6 @@ import { Board } from "@/pages/board/unit";
 import { Home } from "@/pages/home";
 import { Stats } from "@/pages/stats/list";
 import { Stat } from "@/pages/stats/unit";
-import { Outlet, Route, Routes } from "react-router-dom";
 
 export const MainRouter = () => {
   const { user } = useAuth();

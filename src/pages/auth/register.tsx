@@ -1,30 +1,17 @@
-import { AuthSerivce } from "@/services";
 import { useState } from "react";
-import { type SubmitHandler, useForm, Controller } from "react-hook-form";
-import { PasswordToggle } from "./common";
-import { Field, FieldGroup } from "@/components/ui/field";
-import {
-  FieldDescription,
-  FieldLabel,
-  FieldError,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
+import { Controller, type SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { Link, Navigate } from "react-router-dom";
+
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldGroup } from "@/components/ui/field";
+import { FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { AuthSerivce } from "@/services";
+
+import { PasswordToggle } from "./common";
 
 type User = {
   username: string;
@@ -46,8 +33,10 @@ export const Register = () => {
     return Navigate({ to: "/login" });
   };
 
-  const password = form.watch("password");
-  const cnfPassword = form.watch("cnfPassword");
+  const [password, cnfPassword] = useWatch({
+    control: form.control,
+    name: ["password", "cnfPassword"],
+  });
 
   let diabled = true;
   if (password?.trim() !== "" && password === cnfPassword) diabled = false;
@@ -77,9 +66,7 @@ export const Register = () => {
                       className="p-4"
                     />
                     <FieldDescription>Provide a username</FieldDescription>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -106,9 +93,7 @@ export const Register = () => {
                       </InputGroupAddon>
                     </InputGroup>
                     <FieldDescription>Provide a password</FieldDescription>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -135,9 +120,7 @@ export const Register = () => {
                       </InputGroupAddon>
                     </InputGroup>
                     <FieldDescription>Renter a password</FieldDescription>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />

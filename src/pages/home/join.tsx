@@ -1,27 +1,29 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogClose,
-  DialogHeader,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { BoardService } from "@/services";
 import { useEffect, useState } from "react";
 import {
   type FieldErrors,
   type SubmitHandler,
+  useForm,
   type UseFormHandleSubmit,
   type UseFormRegister,
-  useForm,
 } from "react-hook-form";
 import { type NavigateFunction, useNavigate } from "react-router-dom";
+
 import { type BoardType } from "@/components/types";
-import { GameButton } from "./common";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { FieldGroup, FieldLabel, Field } from "@/components/ui/field";
 import { ButtonGroup } from "@/components/ui/button-group";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { BoardService } from "@/services";
+
+import { GameButton } from "./common";
 
 type InputType = {
   key: string;

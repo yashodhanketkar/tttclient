@@ -1,17 +1,19 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogClose,
-  DialogHeader,
-  DialogFooter,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { BoardService } from "@/services";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GameButton } from "./common";
+
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { useState } from "react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/ui/dialog";
+import { BoardService } from "@/services";
+
+import { GameButton } from "./common";
 
 export const NewGame = ({ active }: { active: boolean }) => {
   const navigate = useNavigate();
@@ -24,17 +26,10 @@ export const NewGame = ({ active }: { active: boolean }) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <GameButton
-        text="New Game"
-        disabled={!active}
-        onClick={() => setOpen(true)}
-      />
+      <GameButton text="New Game" disabled={!active} onClick={() => setOpen(true)} />
       <DialogContent>
         <DialogHeader>Start new game?</DialogHeader>
-        <DialogDescription>
-          Please click on start to start a new game. or click on close to
-          cancel?
-        </DialogDescription>
+        <DialogDescription>Please click on start to start a new game. or click on close to cancel?</DialogDescription>
         <DialogFooter>
           <ButtonGroup>
             <DialogClose>

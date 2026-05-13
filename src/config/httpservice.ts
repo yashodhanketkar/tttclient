@@ -5,8 +5,7 @@ if (!BASE_URL) throw new Error("Error setting up connection with server");
 
 axios.defaults.baseURL = BASE_URL;
 
-axios.defaults.headers.common["authorization"] =
-  "Bearer " + (localStorage.getItem("token") || "");
+axios.defaults.headers.common["authorization"] = "Bearer " + (localStorage.getItem("token") || "");
 
 export const httpService = {
   get: axios.get,
