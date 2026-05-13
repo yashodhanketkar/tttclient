@@ -3,11 +3,9 @@ import { useEffect, useMemo, useState } from "react";
 import ReactLoading from "react-loading";
 import { useNavigate, useParams } from "react-router-dom";
 import type { BoardType } from "@/components/types";
-
-type TAlert = {
-  message: string;
-  severity: "success" | "info" | "warning" | "error";
-};
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Copy } from "lucide-react";
 
 const WebSocketURL: string | undefined = import.meta.env.VITE_BASE_URL_WS;
 if (!WebSocketURL) throw new Error("Incorrect webscoket connection string");
@@ -15,8 +13,6 @@ if (!WebSocketURL) throw new Error("Incorrect webscoket connection string");
 export const Board = () => {
   const [board, setBoard] = useState<BoardType>();
   const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [snackAlert, setSnackAlert] = useState<TAlert | null>(null);
   const { id } = useParams();
   const [socketData, setSocketData] = useState("");
   const websock = useMemo(() => new WebSocket(WebSocketURL), []);
@@ -26,11 +22,7 @@ export const Board = () => {
     const scdata = JSON.parse(e.data);
     setSocketData(scdata);
     if (scdata?.message === "Player two joined") {
-      setSnackAlert({
-        message: "Player two joined",
-        severity: "success",
-      });
-      setOpen(true);
+      toast.success("Player two joined");
     }
   };
 
@@ -39,8 +31,7 @@ export const Board = () => {
       const data = await BoardService.getByID(id as string);
       if (data) {
         if (data.isGameOver) {
-          setOpen(true);
-          setSnackAlert({ message: "Game is over", severity: "info" });
+          toast.success("Game is over");
         }
         setBoard(data.board);
       }
@@ -58,23 +49,14 @@ export const Board = () => {
     }
 
     if (pos !== "") {
-      setSnackAlert({
-        message: "Position already filled",
-        severity: "warning",
-      });
-      setOpen(true);
-      return;
+      toast.warning("Position already filled");
     }
 
     const message = await BoardService.move(id as string, { index: ++index });
     if (message === "ok") {
       console.log("Played");
     } else {
-      setSnackAlert({
-        message: "Out of turn",
-        severity: "error",
-      });
-      setOpen(true);
+      toast.error("Out of turn");
     }
   };
 
@@ -91,46 +73,44 @@ export const Board = () => {
     );
 
   return (
-    <div className="container">
-      <div>
-        <div className="grid bg-border gap-1 grid-cols-3 w-1/3 mx-auto shadow">
-          {board.grid.length > 0 &&
-            board.grid.map((pos, i) => (
-              <button
-                className="bg-card aspect-square"
-                key={i}
-                disabled={board.isGameOver}
-                onClick={() => handleSend(i, pos)}
-              >
-                {pos}
-              </button>
-            ))}
-        </div>
+    <div className="container relative h-[85vh]">
+      <div className="@container grid bg-border gap-1 grid-cols-3 lg:w-1/3 mx-auto shadow inline-size w-full">
+        {board.grid.length > 0 &&
+          board.grid.map((pos, i) => (
+            <button
+              className={`bg-card aspect-square font-semibold text-[20cqw] hover:bg-card-foreground/5 ${pos === "X" ? "text-red-500" : "text-green-500"}`}
+              key={i}
+              disabled={board.isGameOver}
+              onClick={() => handleSend(i, pos)}
+            >
+              {pos}
+            </button>
+          ))}
       </div>
       {board.isGameOver ? (
-        <button onClick={() => navigate("/board")}>Return</button>
+        <Button
+          size="lg"
+          className="p-4 font-semibold m-4 absolute bottom-0 left-0"
+          onClick={() => navigate("/board")}
+        >
+          <ArrowLeft />
+          Return
+        </Button>
       ) : (
-        <>
-          {board.numberOfPlayers !== 2 && (
-            <div>
-              <p>Share this key</p>
-              <p>{board.key}</p>
-              <button onClick={() => navigator.clipboard.writeText(board.key)}>
-                Copy
-              </button>
-            </div>
-          )}
-        </>
+        board.numberOfPlayers !== 2 && (
+          <div className="m-4 absolute bottom-0 left-0 flex flex-col gap-1">
+            <p>Share this key</p>
+            <p>{board.key}</p>
+            <Button
+              className="p-4 font-semibold"
+              onClick={() => navigator.clipboard.writeText(board.key)}
+            >
+              <Copy />
+              Copy
+            </Button>
+          </div>
+        )
       )}
-      {/* {snackAlert && ( */}
-      {/*   <div */}
-      {/*     open={open} */}
-      {/*     autoHideDuration={2000} */}
-      {/*     onClose={() => setOpen(false)} */}
-      {/*   > */}
-      {/*     <alert severity={snackAlert.severity}>{snackAlert.message}</alert> */}
-      {/*   </div> */}
-      {/* )} */}
     </div>
   );
 };

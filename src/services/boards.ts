@@ -1,4 +1,5 @@
 import { httpService } from "@/config/httpservice";
+import { toast } from "sonner";
 
 type Move = {
   index: number;
@@ -18,7 +19,12 @@ class BoardServiceClass {
   getByID = async (id: string) => {
     return httpService
       .get("/board/" + id)
-      .then((res) => res.data.data)
+      .then((res) => {
+        if (res.data.data.board.isGameOver) {
+          toast.info("Game is over");
+        }
+        return res.data.data;
+      })
       .catch((err: Error) => console.log(err.message));
   };
 
