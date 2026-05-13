@@ -1,8 +1,9 @@
-import { StatService } from "@/services";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import { ToTop } from "@/components/interface/common";
 import type { StatType } from "@/components/types";
+import { StatService } from "@/services";
 
 export const Stat = () => {
   const { id } = useParams();
@@ -77,16 +78,10 @@ export const Stat = () => {
               <tr key={board._id}>
                 <td>{i + 1}</td>
                 <td>
-                  {board.isGameOver
-                    ? board.hasWinner
-                      ? "Won by " + board.winner.username
-                      : "Draw"
-                    : "In progress"}
+                  {board.isGameOver ? (board.hasWinner ? "Won by " + board.winner.username : "Draw") : "In progress"}
                 </td>
                 <td>
-                  <button onClick={() => navigate("/board/" + board._id)}>
-                    Go To
-                  </button>
+                  <button onClick={() => navigate("/board/" + board._id)}>Go To</button>
                 </td>
               </tr>
             ))}

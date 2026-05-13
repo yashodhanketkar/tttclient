@@ -1,32 +1,37 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  useReactTable,
   type SortingState,
-  type ColumnDef,
+  useReactTable,
 } from "@tanstack/react-table";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Button } from "@/components/ui/button";
 import {
   Table,
-  TableHeader,
-  TableHead,
-  TableRow,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  opts?: boolean;
 }
 
 export const DataTable = <TData, TValue>({
   columns,
   data,
+  opts = false,
 }: DataTableProps<TData, TValue>) => {
+  "use no memo";
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const navigate = useNavigate();
 
@@ -46,10 +51,21 @@ export const DataTable = <TData, TValue>({
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow
+              key={headerGroup.id}
+              className="bg-primary
+              hover:bg-primary/90
+              "
+            >
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    style={{
+                      width: `${header.getSize()}vw`,
+                      color: "var(--color-primary-foreground)",
+                    }}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -59,6 +75,7 @@ export const DataTable = <TData, TValue>({
                   </TableHead>
                 );
               })}
+              {opts && <TableHead>{}</TableHead>}
             </TableRow>
           ))}
         </TableHeader>
@@ -68,24 +85,28 @@ export const DataTable = <TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                className="even:bg-muted"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
-                <TableCell className="text-center">
-                  <Button
-                    variant="link"
-                    onClick={() =>
-                      navigate({
-                        pathname: `/board/${(row.original as any)._id}`,
-                      })
-                    }
-                  >
-                    Go to
-                  </Button>
-                </TableCell>
+                {opts && (
+                  <TableCell className="text-center">
+                    <Button
+                      title={`View board ${(row.original as any)._id}`}
+                      variant="outline"
+                      onClick={() =>
+                        navigate({
+                          pathname: `/board/${(row.original as any)._id}`,
+                        })
+                      }
+                    >
+                      View board
+                    </Button>
+                  </TableCell>
+                )}
               </TableRow>
             ))
           ) : (

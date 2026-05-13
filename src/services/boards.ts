@@ -1,5 +1,6 @@
-import { httpService } from "@/config/httpservice";
 import { toast } from "sonner";
+
+import { httpService } from "@/config/httpservice";
 
 type Move = {
   index: number;
@@ -39,9 +40,7 @@ class BoardServiceClass {
     return httpService
       .get("/board/new")
       .then((res) => res.data.data)
-      .catch((err: Error) =>
-        console.log("Failed to create new board, ", err.message),
-      );
+      .catch((err: Error) => console.log("Failed to create new board, ", err.message));
   };
 
   move = async (id: string, body: Move) => {

@@ -1,11 +1,20 @@
-import { BoardService } from "@/services";
+import { ArrowLeft, Copy } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import ReactLoading from "react-loading";
 import { useNavigate, useParams } from "react-router-dom";
-import type { BoardType } from "@/components/types";
 import { toast } from "sonner";
+
+import type { BoardType } from "@/components/types";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Copy } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { BoardService } from "@/services";
 
 const WebSocketURL: string | undefined = import.meta.env.VITE_BASE_URL_WS;
 if (!WebSocketURL) throw new Error("Incorrect webscoket connection string");
@@ -63,12 +72,7 @@ export const Board = () => {
   if (loading)
     return (
       <p>
-        <ReactLoading
-          type="spinningBubbles"
-          color="#F00"
-          height={"25%"}
-          width={"25%"}
-        />
+        <ReactLoading type="spinningBubbles" color="#F00" height={"25%"} width={"25%"} />
       </p>
     );
 
@@ -87,30 +91,30 @@ export const Board = () => {
             </button>
           ))}
       </div>
-      {board.isGameOver ? (
-        <Button
-          size="lg"
-          className="p-4 font-semibold m-4 absolute bottom-0 left-0"
-          onClick={() => navigate("/board")}
-        >
+      {board.isGameOver && (
+        <Button size="lg" className="p-4 font-semibold m-4 absolute bottom-0 left-0" onClick={() => navigate("/board")}>
           <ArrowLeft />
           Return
         </Button>
-      ) : (
-        board.numberOfPlayers !== 2 && (
-          <div className="m-4 absolute bottom-0 left-0 flex flex-col gap-1">
-            <p>Share this key</p>
-            <p>{board.key}</p>
+      )}
+      <Dialog open={board.numberOfPlayers !== 2}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Invitation Code</DialogTitle>
+            <DialogDescription>Please use this code to invite your opponent</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
             <Button
               className="p-4 font-semibold"
+              title={`Copy ${board.key}`}
               onClick={() => navigator.clipboard.writeText(board.key)}
             >
+              {board.key}
               <Copy />
-              Copy
             </Button>
-          </div>
-        )
-      )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
