@@ -1,7 +1,6 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 
 import { HelperDialog } from "@/components/helper/index";
-import { useAuth } from "@/hooks/auth";
 import { Login } from "@/pages/auth/login";
 import { Register } from "@/pages/auth/register";
 import { Boards } from "@/pages/board/list";
@@ -9,15 +8,17 @@ import { Board } from "@/pages/board/unit";
 import { Home } from "@/pages/home";
 import { Stats } from "@/pages/stats/list";
 import { Stat } from "@/pages/stats/unit";
+import { useAuth } from "@/store/query/auth";
 
 export const MainRouter = () => {
-  const { user } = useAuth();
+  const { useMeQuery } = useAuth();
+  const { data: user } = useMeQuery;
 
   return (
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        {!user.id || user.id === "" ? (
+        {!user ? (
           <>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

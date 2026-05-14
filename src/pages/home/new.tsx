@@ -11,17 +11,21 @@ import {
   DialogFooter,
   DialogHeader,
 } from "@/components/ui/dialog";
-import { BoardService } from "@/services";
+import { useBoard } from "@/store/query/board";
 
 import { GameButton } from "./common";
 
 export const NewGame = ({ active }: { active: boolean }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const { useNewGameMutation } = useBoard();
 
   const handleNewClick = async () => {
-    const game = await BoardService.start();
-    if (game) navigate("/board/" + game._id);
+    useNewGameMutation.mutate(undefined, {
+      onSuccess: (data) => {
+        navigate("/board/" + data._id);
+      },
+    });
   };
 
   return (
@@ -40,10 +44,10 @@ export const NewGame = ({ active }: { active: boolean }) => {
         </DialogDescription>
         <DialogFooter>
           <ButtonGroup>
-            <DialogClose>
-              <Button variant="outline">Close</Button>
-            </DialogClose>
-            <Button onClick={handleNewClick}>Start</Button>
+            <DialogClose render={<Button variant="outline">Close</Button>} />
+            <Button disabled={!open} onClick={handleNewClick}>
+              Start
+            </Button>
           </ButtonGroup>
         </DialogFooter>
       </DialogContent>

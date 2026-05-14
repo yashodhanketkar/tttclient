@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useMemo, useState } from "react";
 import {
   type FieldErrors,
   type SubmitHandler,
@@ -8,7 +9,6 @@ import {
 } from "react-hook-form";
 import { type NavigateFunction, useNavigate } from "react-router-dom";
 
-import { type BoardType } from "@/components/types";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
@@ -18,10 +18,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { BoardService } from "@/services";
+import { useBoard } from "@/store/query/board";
 
 import { GameButton } from "./common";
 
@@ -29,34 +30,34 @@ type InputType = {
   key: string;
 };
 
+const WebSocketURL: string | undefined = import.meta.env.VITE_BASE_URL_WS;
+if (!WebSocketURL) throw new Error("Incorrect webscoket connection string");
+
 export const JoinGame = ({ active }: { active: boolean }) => {
-  const navigate = useNavigate();
-  const [id, setId] = useState("");
-  const [boards, setBoards] = useState<BoardType[]>();
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const apiData = async () => {
-      const data: BoardType[] = await BoardService.getAll();
-      if (data && data.length > 0) {
-        const availableBoards = data.filter((board) => !board.isGameOver);
-        setBoards(availableBoards);
-      }
-    };
-    apiData();
-  }, [open]);
-
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<InputType>();
+  const websock = useMemo(() => new WebSocket(WebSocketURL), []);
+
+  const navigate = useNavigate();
+  const [id, setId] = useState("");
+  const [open, setOpen] = useState(false);
+  const { useGetAllBoardsQuery, useJoinGameMutation } = useBoard();
+
+  const { data, isLoading, isError } = useGetAllBoardsQuery;
+  const boards = data?.filter((board) => !board.isGameOver);
+  const qc = useQueryClient();
 
   const onSubmit: SubmitHandler<InputType> = async (data) => {
-    const res = await BoardService.join(id, data.key);
-    console.log(res);
-    if (res) navigate("/board/" + id);
+    useJoinGameMutation.mutate(
+      { id: id, key: data.key },
+      {
+        onSuccess: () => navigate("/board/" + id),
+      },
+    );
   };
 
   const handleClick = () => {
@@ -68,13 +69,34 @@ export const JoinGame = ({ active }: { active: boolean }) => {
     reset();
   };
 
+  useEffect(() => {
+    websock.onmessage = (e) => {
+      const scdata = JSON.parse(e.data);
+      if ((scdata?.message as string).includes("New board created")) {
+        qc.invalidateQueries({
+          queryKey: ["allBoards"],
+        });
+      }
+    };
+
+    return () => {
+      websock.onmessage = null;
+    };
+  }, [websock]);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <GameButton
-        id="join-game-button"
-        text="Join Game"
-        disabled={!active || !boards || boards.length < 1}
-        onClick={() => setOpen(true)}
+      <DialogTrigger
+        render={
+          <GameButton
+            id="join-game-button"
+            text="Join Game"
+            disabled={
+              !active || !boards || boards.length < 1 || isLoading || isError
+            }
+            onClick={() => setOpen(true)}
+          />
+        }
       />
       <DialogContent>
         <DialogHeader>
@@ -107,9 +129,7 @@ export const JoinGame = ({ active }: { active: boolean }) => {
           />
         )}
         <DialogFooter>
-          <DialogClose>
-            <Button variant="outline">Close</Button>
-          </DialogClose>
+          <DialogClose render={<Button variant="outline">Close</Button>} />
         </DialogFooter>
       </DialogContent>
     </Dialog>

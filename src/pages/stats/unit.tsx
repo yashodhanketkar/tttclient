@@ -1,28 +1,16 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { ToTop } from "@/components/interface/common";
-import type { StatType } from "@/components/types";
-import { StatService } from "@/services";
+import { useStats } from "@/store/query/stats";
 
 export const Stat = () => {
   const { id } = useParams();
-  const [stat, setStat] = useState<StatType>();
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const apiData = async () => {
-      const data: StatType = await StatService.getByID(id as string);
-      if (data) {
-        setStat(data);
-      }
-      setLoading(false);
-    };
-    apiData();
-  }, [id]);
+  const { data: stat, isLoading, isError } = useStats(id).useStatsByIdQuery;
 
-  if (loading) return <>Loading data</>;
+  if (isLoading) return <>Loading data</>;
+  if (isError) return <>Error</>;
 
   if (!stat || !stat.username)
     return (
@@ -78,10 +66,16 @@ export const Stat = () => {
               <tr key={board._id}>
                 <td>{i + 1}</td>
                 <td>
-                  {board.isGameOver ? (board.hasWinner ? "Won by " + board.winner.username : "Draw") : "In progress"}
+                  {board.isGameOver
+                    ? board.hasWinner
+                      ? "Won by " + board.winner.username
+                      : "Draw"
+                    : "In progress"}
                 </td>
                 <td>
-                  <button onClick={() => navigate("/board/" + board._id)}>Go To</button>
+                  <button onClick={() => navigate("/board/" + board._id)}>
+                    Go To
+                  </button>
                 </td>
               </tr>
             ))}

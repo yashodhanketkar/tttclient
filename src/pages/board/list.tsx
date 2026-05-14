@@ -1,36 +1,32 @@
-import { useEffect, useState } from "react";
-
 import { ToTop } from "@/components/interface/common";
-import type { BoardType } from "@/components/types";
-import { useAuth } from "@/hooks/auth";
-import { BoardService } from "@/services";
+import { useAuth } from "@/store/query/auth";
+import { useBoard } from "@/store/query/board";
 
 import { DataTable } from "../../components/datatable";
 import { columns } from "./data";
 
 export const Boards = () => {
-  const [boards, setBoards] = useState<BoardType[]>([]);
+  const { useMeQuery } = useAuth();
   const {
-    user: { id },
-  } = useAuth();
+    data: { id },
+  } = useMeQuery;
 
-  useEffect(() => {
-    const apiData = async () => {
-      const boards: BoardType[] = await BoardService.getAll();
-      setBoards(
-        boards.filter((board) => {
-          if (board.startedBy?._id == id) return true;
-          if (board.against?._id == id) return true;
-          return false;
-        }),
-      );
-    };
-    apiData();
-  }, [id]);
+  const { useGetAllBoardsQuery } = useBoard();
+
+  const { data: Allboards, isLoading, isError } = useGetAllBoardsQuery;
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error</div>;
+
+  const boards = Allboards?.filter((board) => {
+    if (board.startedBy?._id == id) return true;
+    if (board.against?._id == id) return true;
+    return false;
+  });
 
   return (
-    <div className="grid">
-      <DataTable columns={columns} data={boards} opts />
+    <div className="container mb-4">
+      <DataTable columns={columns} data={boards!} opts />
       <ToTop />
     </div>
   );

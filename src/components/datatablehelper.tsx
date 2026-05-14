@@ -3,11 +3,17 @@ import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "./ui/button";
 
-export const colSorter = <T,>({ label, column }: { label: string; column: Column<T, unknown> }) => {
+export const colSorter = <T,>({
+  label,
+  column,
+}: {
+  label: string;
+  column: Column<T, unknown>;
+}) => {
   return (
     <Button
       variant="ghost"
-      className="w-full inline-flex justify-between"
+      className="w-full inline-flex justify-between hover:bg-card text-card-foreground"
       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
     >
       {label}
@@ -16,7 +22,13 @@ export const colSorter = <T,>({ label, column }: { label: string; column: Column
   );
 };
 
-export const renderStatCell = ({ count, rate }: { count: number; rate: number }) => {
+export const renderStatCell = ({
+  count,
+  rate,
+}: {
+  count: number;
+  rate: number;
+}) => {
   const scount = count ?? 0;
   const srate = rate ?? 0;
 

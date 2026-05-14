@@ -8,6 +8,6 @@ interface HelpState {
 
 export const useHelpStore = create<HelpState>((set) => ({
   isOpen: false,
-  setOpen: (value: boolean) => set({ isOpen: value }),
+  setOpen: (value) => set({ isOpen: value }),
   toggleOpen: () => set((state) => ({ isOpen: !state.isOpen })),
 }));

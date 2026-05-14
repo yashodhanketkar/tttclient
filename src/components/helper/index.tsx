@@ -23,11 +23,11 @@ export const HelperDialog = () => {
         render={
           <Button
             size="icon-lg"
-            variant="outline"
+            variant="ghost"
             title={`Press ? to show keybinds`}
-            className="rounded-full fixed bottom-20 right-5"
+            className="rounded-full fixed bottom-20 right-5 dark:bg-secondary dark:text-primary-secondary"
           >
-            <CircleQuestionMarkIcon />
+            <CircleQuestionMarkIcon className="size-6" />
           </Button>
         }
       />

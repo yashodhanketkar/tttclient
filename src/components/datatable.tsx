@@ -51,19 +51,14 @@ export const DataTable = <TData, TValue>({
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              className="bg-primary
-              hover:bg-primary/90
-              "
-            >
+            <TableRow key={headerGroup.id} className="bg-card">
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
                     key={header.id}
                     style={{
                       width: `${header.getSize()}vw`,
-                      color: "var(--color-primary-foreground)",
+                      color: "var(--color-card-foreground)",
                     }}
                   >
                     {header.isPlaceholder

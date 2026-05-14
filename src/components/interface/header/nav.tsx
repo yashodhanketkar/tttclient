@@ -8,26 +8,30 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { useAuth } from "@/hooks/auth";
+import { useAuthStore } from "@/store/authState";
 import { useNavMenuStore } from "@/store/menustate";
 
 import { menu_config } from "./menu";
 
 export const NavBar = () => {
-  const { user } = useAuth();
-  const sections = user?.id ? menu_config.auth : menu_config.guest;
-
+  const { token } = useAuthStore();
   const { activeMenu, setActiveMenu } = useNavMenuStore();
 
+  const sections = token !== "" ? menu_config.auth : menu_config.guest;
+
   return (
-    <NavigationMenu value={activeMenu} onValueChange={setActiveMenu}>
+    <NavigationMenu
+      value={activeMenu}
+      onValueChange={setActiveMenu}
+      className="ml-auto"
+    >
       <NavigationMenuList>
         {sections.map((s) => (
           <NavigationMenuItem key={s.label} value={s.label}>
             <NavigationMenuTrigger id={s.label + "-trigger"}>
               {s.label}
             </NavigationMenuTrigger>
-            <NavigationMenuContent>
+            <NavigationMenuContent className="w-[20ch]">
               {s.items?.map((item, i) => (
                 <ListItem id={i} key={item.to} {...item} />
               ))}
@@ -53,18 +57,14 @@ const ListItem = ({
 }) => (
   <NavigationMenuLink
     render={
-      <div>
-        <NavLink
-          id={`nav-menu-item-${id + 1}`}
-          to={to}
-          className="flex flex-col gap-1 text-sm w-[10vw] p-2 hover:bg-accent"
-        >
-          <div className="leading-none font-medium">{title}</div>
-          <div className="line-clamp-2 text-muted-foreground">
-            {description}
-          </div>
-        </NavLink>
-      </div>
+      <NavLink
+        id={`nav-menu-item-${id + 1}`}
+        to={to}
+        className="flex flex-col gap-1 text-sm p-2 hover:bg-accent w-full items-start"
+      >
+        <div className="leading-none font-medium">{title}</div>
+        <div className="line-clamp-2 text-muted-foreground">{description}</div>
+      </NavLink>
     }
   />
 );
