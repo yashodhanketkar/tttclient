@@ -1,4 +1,4 @@
-import { ChevronUp } from "lucide-react";
+import { CircleArrowUp } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -7,10 +7,10 @@ export const ToTop = () => {
     <Button
       size="icon-lg"
       variant="outline"
-      className="rounded-full fixed bottom-20 right-15"
+      className="rounded-full fixed bottom-20 right-15 dark:bg-secondary dark:text-primary-secondary"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
     >
-      <ChevronUp />
+      <CircleArrowUp className="size-6" />
     </Button>
   );
 };

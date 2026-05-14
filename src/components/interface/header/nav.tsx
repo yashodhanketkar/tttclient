@@ -25,7 +25,11 @@ export const NavBar = () => {
   const sections = user?.id ? menu_config.auth : menu_config.guest;
 
   return (
-    <NavigationMenu value={activeMenu} onValueChange={setActiveMenu}>
+    <NavigationMenu
+      value={activeMenu}
+      onValueChange={setActiveMenu}
+      className="ml-auto"
+    >
       <NavigationMenuList>
         {sections.map((s) => (
           <NavigationMenuItem key={s.label} value={s.label}>

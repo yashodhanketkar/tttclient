@@ -72,9 +72,18 @@ export const Board = () => {
         {board.grid.length > 0 &&
           board.grid.map((pos, i) => (
             <button
-              className={`bg-card aspect-square font-semibold text-[20cqw] hover:bg-card-foreground/5 ${pos === "X" ? "text-red-500" : "text-green-500"}`}
+              className={
+                " bg-card aspect-square font-semibold text-[20cqw] hover:bg-card-foreground/5 " +
+                " dark:bg-secondary hover:dark:bg-card-foreground/25 " +
+                (pos === "X" ? " text-red-500 " : " text-green-500 ")
+              }
               key={i}
               id={`board-cell-${i + 1}`}
+              title={
+                board.currentMark === "O"
+                  ? "Player 1's turn - O"
+                  : "Player 2's turn - X"
+              }
               disabled={board.isGameOver}
               onClick={() => handleSend(i, pos)}
             >
