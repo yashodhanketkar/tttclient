@@ -71,6 +71,7 @@ export const JoinGame = ({ active }: { active: boolean }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <GameButton
+        id="join-game-button"
         text="Join Game"
         disabled={!active || !boards || boards.length < 1}
         onClick={() => setOpen(true)}

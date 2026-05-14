@@ -26,10 +26,18 @@ export const NewGame = ({ active }: { active: boolean }) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <GameButton text="New Game" disabled={!active} onClick={() => setOpen(true)} />
+      <GameButton
+        id="new-game-button"
+        text="New Game"
+        disabled={!active}
+        onClick={() => setOpen(true)}
+      />
       <DialogContent>
         <DialogHeader>Start new game?</DialogHeader>
-        <DialogDescription>Please click on start to start a new game. or click on close to cancel?</DialogDescription>
+        <DialogDescription>
+          Please click on start to start a new game. or click on close to
+          cancel?
+        </DialogDescription>
         <DialogFooter>
           <ButtonGroup>
             <DialogClose>
