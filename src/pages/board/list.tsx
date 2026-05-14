@@ -25,7 +25,7 @@ export const Boards = () => {
   });
 
   return (
-    <div className="grid">
+    <div className="container mb-4">
       <DataTable columns={columns} data={boards!} opts />
       <ToTop />
     </div>

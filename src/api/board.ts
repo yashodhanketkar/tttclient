@@ -8,51 +8,52 @@ type Move = {
 };
 
 export const getAll = async (): Promise<BoardType[]> => {
-  return api
-    .get("/board")
-    .then((res) => res.data.data)
-    .catch((err: Error) => {
-      console.error("Failed to fetch ", err.message);
-      return [];
-    });
+  const res = await api.get("/board");
+
+  if (res.status !== 200) {
+    toast.error("Failed to fetch boards");
+    return [];
+  }
+
+  return res.data.data;
 };
 
-export const getByID = async ({ id }: { id: string }): Promise<BoardType> => {
-  return api
-    .get("/board/" + id)
-    .then((res) => {
-      if (res.data.data.board.isGameOver) {
-        toast.info("Game is over");
-      }
-      return res.data.data;
-    })
-    .catch((err: Error) => console.error(err.message));
-};
+export const getByID = async (id: string): Promise<BoardType | undefined> => {
+  const res = await api.get("/board/" + id);
 
-export const join = async ({ id, key }: { id: string; key: string }) => {
-  return api
-    .put("/board/saved/" + id, { key })
-    .then((res) => res.data.data.status)
-    .catch((err: Error) => console.error("Failed to join, " + err.message));
+  return res.data.data.board;
 };
 
 export const start = async () => {
-  return api
-    .get("/board/new")
-    .then((res) => res.data.data)
-    .catch((err: Error) =>
-      console.error("Failed to create new board, ", err.message),
-    );
+  const res = await api.get("/board/new");
+
+  if (res.status !== 201) {
+    toast.error("Failed to create new board");
+    return;
+  }
+
+  return res.data.data;
+};
+
+export const join = async ({ id, key }: { id: string; key: string }) => {
+  const res = await api.put("/board/saved/" + id, { key });
+
+  if (res.status !== 200) {
+    toast.error("Failed to join game");
+    return;
+  }
+
+  return res.data.data.status;
 };
 
 export const move = async ({ id, body }: { id: string; body: Move }) => {
-  return await api
-    .put("/board/move/" + id, { ...body })
-    .then((res) => {
-      if (res.status !== 200) throw new Error("Wrong move");
-      return "ok";
-    })
-    .catch((err: Error) => console.error("Failed to play a move", err.message));
+  const res = await api.put("/board/move/" + id, { ...body });
+
+  if (res.status !== 200) {
+    toast.error("Wrong move");
+  }
+
+  return "Ok";
 };
 
 export const boardAPI = {

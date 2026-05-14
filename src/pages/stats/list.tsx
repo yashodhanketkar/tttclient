@@ -12,7 +12,7 @@ export const Stats = () => {
   if (isError) return <div>Error</div>;
 
   return (
-    <div className="container">
+    <div className="container mb-4">
       <DataTable columns={columns} data={stats} />
       <ToTop />
     </div>

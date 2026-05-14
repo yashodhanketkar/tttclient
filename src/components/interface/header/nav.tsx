@@ -8,21 +8,16 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { useAuthStore } from "@/store/authState";
 import { useNavMenuStore } from "@/store/menustate";
-import { useAuth } from "@/store/query/auth";
 
 import { menu_config } from "./menu";
 
 export const NavBar = () => {
+  const { token } = useAuthStore();
   const { activeMenu, setActiveMenu } = useNavMenuStore();
-  const { useMeQuery } = useAuth();
 
-  const { data: user, isLoading, isError } = useMeQuery;
-
-  if (isLoading) return <></>;
-  if (isError) return <></>;
-
-  const sections = user?.id ? menu_config.auth : menu_config.guest;
+  const sections = token !== "" ? menu_config.auth : menu_config.guest;
 
   return (
     <NavigationMenu
@@ -36,7 +31,7 @@ export const NavBar = () => {
             <NavigationMenuTrigger id={s.label + "-trigger"}>
               {s.label}
             </NavigationMenuTrigger>
-            <NavigationMenuContent>
+            <NavigationMenuContent className="w-[20ch]">
               {s.items?.map((item, i) => (
                 <ListItem id={i} key={item.to} {...item} />
               ))}
@@ -62,18 +57,14 @@ const ListItem = ({
 }) => (
   <NavigationMenuLink
     render={
-      <div>
-        <NavLink
-          id={`nav-menu-item-${id + 1}`}
-          to={to}
-          className="flex flex-col gap-1 text-sm w-[10vw] p-2 hover:bg-accent"
-        >
-          <div className="leading-none font-medium">{title}</div>
-          <div className="line-clamp-2 text-muted-foreground">
-            {description}
-          </div>
-        </NavLink>
-      </div>
+      <NavLink
+        id={`nav-menu-item-${id + 1}`}
+        to={to}
+        className="flex flex-col gap-1 text-sm p-2 hover:bg-accent w-full items-start"
+      >
+        <div className="leading-none font-medium">{title}</div>
+        <div className="line-clamp-2 text-muted-foreground">{description}</div>
+      </NavLink>
     }
   />
 );

@@ -1,12 +1,14 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { boardAPI } from "@/api/board";
 
 export const useBoard = () => {
-  const useNewGameQuery = useQuery({
-    queryKey: ["game"],
-    queryFn: boardAPI.start,
+  const qc = useQueryClient();
+
+  const useNewGameMutation = useMutation({
+    mutationFn: boardAPI.start,
+    onSuccess: () => toast.success("Game started"),
   });
 
   const useJoinGameMutation = useMutation({
@@ -14,13 +16,18 @@ export const useBoard = () => {
     onSuccess: () => toast.success("Joined"),
   });
 
-  const useBoardByIdQuery = useMutation({
-    mutationFn: boardAPI.getByID,
-  });
+  const useBoardByIdQuery = (id: string) =>
+    useQuery({
+      queryFn: () => boardAPI.getByID(id),
+      queryKey: ["board"],
+    });
 
   const useBoardMoveMutation = useMutation({
     mutationFn: boardAPI.move,
-    onSuccess: () => toast.success("Played"),
+    onSuccess: () => {
+      toast.success("Played");
+      qc.invalidateQueries({ queryKey: ["board"] });
+    },
     onError: () => toast.error("Failed to play a move"),
   });
 
@@ -30,7 +37,7 @@ export const useBoard = () => {
   });
 
   return {
-    useNewGameQuery,
+    useNewGameMutation,
     useJoinGameMutation,
     useBoardByIdQuery,
     useBoardMoveMutation,

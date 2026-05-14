@@ -1,11 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { userAPI } from "@/api/user";
 
 export const useAuth = () => {
-  const queryClient = useQueryClient();
-
   const useRegisterMutation = useMutation({
     mutationFn: userAPI.register,
     onError: () => toast.error("Failed to register"),
@@ -14,9 +12,6 @@ export const useAuth = () => {
 
   const useLoginMutation = useMutation({
     mutationFn: userAPI.login,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
-    },
     onError: () => toast.error("Failed to login"),
     mutationKey: ["login"],
   });
