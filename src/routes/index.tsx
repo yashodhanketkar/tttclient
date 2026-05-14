@@ -1,5 +1,6 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 
+import { HelperDialog } from "@/components/helper/index";
 import { useAuth } from "@/hooks/auth";
 import { Login } from "@/pages/auth/login";
 import { Register } from "@/pages/auth/register";
@@ -31,6 +32,7 @@ export const MainRouter = () => {
         )}
         <Route path="*" element={<>404 | Page not found</>} />
       </Routes>
+      <HelperDialog />
       <Outlet />
     </>
   );

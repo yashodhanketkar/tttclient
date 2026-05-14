@@ -7,7 +7,7 @@ export const ToTop = () => {
     <Button
       size="icon-lg"
       variant="outline"
-      className="rounded-full fixed bottom-20 right-5"
+      className="rounded-full fixed bottom-20 right-15"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
     >
       <ChevronUp />

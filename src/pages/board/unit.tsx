@@ -72,7 +72,12 @@ export const Board = () => {
   if (loading)
     return (
       <p>
-        <ReactLoading type="spinningBubbles" color="#F00" height={"25%"} width={"25%"} />
+        <ReactLoading
+          type="spinningBubbles"
+          color="#F00"
+          height={"25%"}
+          width={"25%"}
+        />
       </p>
     );
 
@@ -84,6 +89,7 @@ export const Board = () => {
             <button
               className={`bg-card aspect-square font-semibold text-[20cqw] hover:bg-card-foreground/5 ${pos === "X" ? "text-red-500" : "text-green-500"}`}
               key={i}
+              id={`board-cell-${i + 1}`}
               disabled={board.isGameOver}
               onClick={() => handleSend(i, pos)}
             >
@@ -92,7 +98,11 @@ export const Board = () => {
           ))}
       </div>
       {board.isGameOver && (
-        <Button size="lg" className="p-4 font-semibold m-4 absolute bottom-0 left-0" onClick={() => navigate("/board")}>
+        <Button
+          size="lg"
+          className="p-4 font-semibold m-4 absolute bottom-0 left-0"
+          onClick={() => navigate("/board")}
+        >
           <ArrowLeft />
           Return
         </Button>
@@ -101,7 +111,9 @@ export const Board = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Invitation Code</DialogTitle>
-            <DialogDescription>Please use this code to invite your opponent</DialogDescription>
+            <DialogDescription>
+              Please use this code to invite your opponent
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button
