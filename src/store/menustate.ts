@@ -8,6 +8,6 @@ interface NavMenuState {
 
 export const useNavMenuStore = create<NavMenuState>((set) => ({
   activeMenu: "",
-  setActiveMenu: (value: string) => set({ activeMenu: value }),
+  setActiveMenu: (value) => set({ activeMenu: value }),
   closeMenu: () => set({ activeMenu: "" }),
 }));

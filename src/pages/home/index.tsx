@@ -1,13 +1,13 @@
 import { NavLink } from "react-router-dom";
 
-import { useAuth } from "@/hooks/auth";
+import { useAuthStore } from "@/store/authState";
 
 import { JoinGame } from "./join";
 import { NewGame } from "./new";
 
 export const Home = () => {
-  const { user } = useAuth();
-  const loggedIn = user?.id ? true : false;
+  const { token } = useAuthStore();
+  const loggedIn = token !== "";
 
   return (
     <div>

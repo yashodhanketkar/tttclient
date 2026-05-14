@@ -1,26 +1,15 @@
-import { useEffect, useState } from "react";
-
 import { DataTable } from "@/components/datatable";
 import { ToTop } from "@/components/interface/common";
-import { type StatType } from "@/components/types";
-import { StatService } from "@/services";
+import { useStats } from "@/store/query/stats";
 
 import { columns } from "./data";
 
 export const Stats = () => {
-  const [stats, setStats] = useState<StatType[]>([]);
+  const { useAllStatsQuery } = useStats();
+  const { data: stats, isLoading, isError } = useAllStatsQuery;
 
-  useEffect(() => {
-    const apiData = async () => {
-      const data = await StatService.getAll();
-      if (data) {
-        setStats(data.data);
-      }
-    };
-    apiData();
-  }, []);
-
-  console.log(stats);
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error</div>;
 
   return (
     <div className="container">

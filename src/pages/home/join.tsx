@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { BoardService } from "@/services";
+import { useBoard } from "@/store/query/board";
 
 import { GameButton } from "./common";
 
@@ -34,10 +34,11 @@ export const JoinGame = ({ active }: { active: boolean }) => {
   const [id, setId] = useState("");
   const [boards, setBoards] = useState<BoardType[]>();
   const [open, setOpen] = useState(false);
+  const { useGetAllBoardsQuery, useJoinGameMutation } = useBoard();
 
   useEffect(() => {
     const apiData = async () => {
-      const data: BoardType[] = await BoardService.getAll();
+      const { data } = useGetAllBoardsQuery;
       if (data && data.length > 0) {
         const availableBoards = data.filter((board) => !board.isGameOver);
         setBoards(availableBoards);
@@ -54,9 +55,12 @@ export const JoinGame = ({ active }: { active: boolean }) => {
   } = useForm<InputType>();
 
   const onSubmit: SubmitHandler<InputType> = async (data) => {
-    const res = await BoardService.join(id, data.key);
-    console.log(res);
-    if (res) navigate("/board/" + id);
+    useJoinGameMutation.mutate(
+      { id: id, key: data.key },
+      {
+        onSuccess: () => navigate("/board/" + id),
+      },
+    );
   };
 
   const handleClick = () => {

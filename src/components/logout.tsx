@@ -1,4 +1,4 @@
 export const Logout = () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem("ttt_access_token");
   location.href = "/";
 };

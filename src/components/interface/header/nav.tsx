@@ -8,16 +8,21 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { useAuth } from "@/hooks/auth";
 import { useNavMenuStore } from "@/store/menustate";
+import { useAuth } from "@/store/query/auth";
 
 import { menu_config } from "./menu";
 
 export const NavBar = () => {
-  const { user } = useAuth();
-  const sections = user?.id ? menu_config.auth : menu_config.guest;
-
   const { activeMenu, setActiveMenu } = useNavMenuStore();
+  const { useMeQuery } = useAuth();
+
+  const { data: user, isLoading, isError } = useMeQuery;
+
+  if (isLoading) return <></>;
+  if (isError) return <></>;
+
+  const sections = user?.id ? menu_config.auth : menu_config.guest;
 
   return (
     <NavigationMenu value={activeMenu} onValueChange={setActiveMenu}>

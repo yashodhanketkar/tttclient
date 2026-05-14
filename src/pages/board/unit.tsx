@@ -1,6 +1,5 @@
 import { ArrowLeft, Copy } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import ReactLoading from "react-loading";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -14,42 +13,35 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { BoardService } from "@/services";
+import { useBoard } from "@/store/query/board";
 
 const WebSocketURL: string | undefined = import.meta.env.VITE_BASE_URL_WS;
 if (!WebSocketURL) throw new Error("Incorrect webscoket connection string");
 
 export const Board = () => {
-  const [board, setBoard] = useState<BoardType>();
-  const [loading, setLoading] = useState(true);
   const { id } = useParams();
-  const [socketData, setSocketData] = useState("");
   const websock = useMemo(() => new WebSocket(WebSocketURL), []);
   const navigate = useNavigate();
+  const { useBoardMoveMutation, useBoardByIdQuery } = useBoard();
+  const [board, setBoard] = useState<BoardType>();
 
   websock.onmessage = (e) => {
     const scdata = JSON.parse(e.data);
-    setSocketData(scdata);
     if (scdata?.message === "Player two joined") {
       toast.success("Player two joined");
     }
   };
 
-  useEffect(() => {
-    const apiData = async () => {
-      const data = await BoardService.getByID(id as string);
-      if (data) {
-        if (data.isGameOver) {
-          toast.success("Game is over");
-        }
-        setBoard(data.board);
-      }
-    };
-    apiData();
-    setLoading(false);
-  }, [id, socketData]);
+  useBoardByIdQuery.mutate(
+    { id: id as string },
+    {
+      onSuccess: (data) => {
+        setBoard(data);
+      },
+    },
+  );
 
-  if (!board) return <></>;
+  if (!board) return <div>Loading...</div>;
 
   const handleSend = async (index: number, pos: string) => {
     if (board.isGameOver) {
@@ -61,25 +53,18 @@ export const Board = () => {
       toast.warning("Position already filled");
     }
 
-    const message = await BoardService.move(id as string, { index: ++index });
-    if (message === "ok") {
-      console.log("Played");
-    } else {
-      toast.error("Out of turn");
-    }
-  };
-
-  if (loading)
-    return (
-      <p>
-        <ReactLoading
-          type="spinningBubbles"
-          color="#F00"
-          height={"25%"}
-          width={"25%"}
-        />
-      </p>
+    useBoardMoveMutation.mutate(
+      {
+        id: id as string,
+        body: { index: ++index },
+      },
+      {
+        onError: () => {
+          toast.error("Out of turn");
+        },
+      },
     );
+  };
 
   return (
     <div className="container relative h-[85vh]">

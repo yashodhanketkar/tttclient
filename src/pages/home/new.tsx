@@ -11,16 +11,17 @@ import {
   DialogFooter,
   DialogHeader,
 } from "@/components/ui/dialog";
-import { BoardService } from "@/services";
+import { useBoard } from "@/store/query/board";
 
 import { GameButton } from "./common";
 
 export const NewGame = ({ active }: { active: boolean }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const { useNewGameQuery } = useBoard();
 
   const handleNewClick = async () => {
-    const game = await BoardService.start();
+    const { data: game } = useNewGameQuery;
     if (game) navigate("/board/" + game._id);
   };
 
