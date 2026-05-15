@@ -13,10 +13,16 @@ export const Home = () => {
     <div>
       <div>
         <h1
-          className="scroll-m-20 text-center font-extrabold tracking-tight text-balance mt-[30vh]
-          mb-6 text-5xl md:mb-10 md:text-6xl"
+          className="scroll-m-20 text-center font-extrabold tracking-tight text-balance text-5xl md:text-6xl
+          mt-[30vh] mb-6 md:mb-10 w-[15ch] mx-auto group cursor-pointer"
         >
-          Welcome to TTT
+          Welcome to the
+          <span
+            className="rounded-md mx-2 transition-all duration-300 ease-in-out delay-100
+            group-hover:bg-primary group-hover:text-primary-foreground group-hover:px-2"
+          >
+            TTT
+          </span>
         </h1>
       </div>
       <div className="w-full flex flex-col md:flex-row gap-4 justify-center">

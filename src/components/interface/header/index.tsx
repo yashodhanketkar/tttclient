@@ -8,8 +8,8 @@ import { NavBar } from "./nav";
 
 export const Header = () => {
   return (
-    <div className="flex inline-flex justify-between px-4 py-2 w-full border-b border-border bg-card text-card-foreground items-center">
-      <Link to="/" className="font-semibold text-lg">
+    <div className="flex inline-flex justify-between px-4 py-2 w-full border-b border-border bg-card text-card-foreground items-center z-50">
+      <Link to="/" className="font-extrabold text-2xl">
         TicTacToe
       </Link>
       <NavBar />

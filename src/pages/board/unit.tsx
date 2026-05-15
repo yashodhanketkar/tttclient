@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import { useBoard } from "@/store/query/board";
 
 const WebSocketURL: string | undefined = import.meta.env.VITE_BASE_URL_WS;
@@ -24,6 +25,10 @@ export const Board = () => {
   const { useBoardMoveMutation, useBoardByIdQuery } = useBoard();
   const websock = useMemo(() => new WebSocket(WebSocketURL), []);
   const qc = useQueryClient();
+
+  const handleReturn = () => {
+    navigate("/board");
+  };
 
   useEffect(() => {
     websock.onmessage = (e) => {
@@ -86,24 +91,16 @@ export const Board = () => {
   };
 
   return (
-    <div className="container relative h-[85vh]">
-      <div className="@container grid bg-border dark:bg-card gap-1 grid-cols-3 lg:w-1/3 mx-auto shadow inline-size w-full">
+    <div className="container relative">
+      <div className="@container grid p-2 gap-2 grid-cols-3 lg:w-1/3 mx-auto inline-size w-full rounded-lg bg-primary/15">
         {board.grid.length > 0 &&
           board.grid.map((pos, i) => (
             <button
-              className={
-                " bg-card aspect-square font-semibold text-[20cqw] hover:bg-card-foreground/5 " +
-                " dark:bg-secondary hover:dark:bg-card-foreground/25 " +
-                (pos === "X" ? " text-red-500 " : " text-green-500 ")
-              }
+              className={cn("board-button", pos === "X" && "text-red-500", pos === "O" && "text-green-500")}
               key={i}
               id={`board-cell-${i + 1}`}
-              title={
-                board.currentMark === "O"
-                  ? "Player 1's turn - O"
-                  : "Player 2's turn - X"
-              }
-              disabled={board.isGameOver}
+              title={board.currentMark === "O" ? "Player 1's turn - O" : "Player 2's turn - X"}
+              disabled={board.isGameOver || pos !== ""}
               onClick={() => handleSend(i, pos)}
             >
               {pos}
@@ -111,11 +108,7 @@ export const Board = () => {
           ))}
       </div>
       {board.isGameOver && (
-        <Button
-          size="lg"
-          className="p-4 font-semibold m-4 absolute bottom-0 left-0"
-          onClick={() => navigate("/board")}
-        >
+        <Button size="lg" className="p-4 font-semibold m-4 absolute bottom-0 left-0" onClick={() => navigate("/board")}>
           <ArrowLeft />
           Return
         </Button>
@@ -124,11 +117,12 @@ export const Board = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Invitation Code</DialogTitle>
-            <DialogDescription>
-              Please use this code to invite your opponent
-            </DialogDescription>
+            <DialogDescription>Please use this code to invite your opponent</DialogDescription>
           </DialogHeader>
           <DialogFooter>
+            <Button variant="link" onClick={handleReturn}>
+              Choose another board
+            </Button>
             <Button
               className="p-4 font-semibold"
               title={`Copy ${board.key}`}

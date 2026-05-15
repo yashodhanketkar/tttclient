@@ -15,9 +15,9 @@ export const GameButton = ({
     <Button
       onClick={onClick}
       id={id}
-      className="
-      md:hover:p-7 md:hover:-translate-y-1 w-1/2 md:w-auto mx-auto md:mx-0
-      text-xl p-6 hover:bg-stone-700"
+      className="w-1/2 md:w-auto mx-auto md:mx-0
+      border-0 transition-all duration-200 text-xl p-6
+      hover:shadow-lg hover:shadow-primary md:hover:-translate-y-1"
       disabled={disabled}
     >
       {text}

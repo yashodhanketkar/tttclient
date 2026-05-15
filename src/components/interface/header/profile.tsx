@@ -1,4 +1,4 @@
-import { Logout } from "@/components/logout";
+import { LogoutButton } from "@/components/buttons/logout";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -26,12 +26,8 @@ export const Profile = () => {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <DialogClose>
-              <Button variant="outline">Close</Button>
-            </DialogClose>
-            <Button autoFocus onClick={Logout}>
-              Logout
-            </Button>
+            <DialogClose render={<Button variant="outline">Close</Button>} />
+            <LogoutButton />
           </DialogFooter>
         </DialogContent>
       </Dialog>

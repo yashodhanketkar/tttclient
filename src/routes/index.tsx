@@ -5,6 +5,7 @@ import { Login } from "@/pages/auth/login";
 import { Register } from "@/pages/auth/register";
 import { Boards } from "@/pages/board/list";
 import { Board } from "@/pages/board/unit";
+import { NotFound } from "@/pages/errors/notfound";
 import { Home } from "@/pages/home";
 import { Stats } from "@/pages/stats/list";
 import { Stat } from "@/pages/stats/unit";
@@ -31,7 +32,7 @@ export const MainRouter = () => {
             <Route path="/board/:id" element={<Board />} />
           </>
         )}
-        <Route path="*" element={<>404 | Page not found</>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <HelperDialog />
       <Outlet />

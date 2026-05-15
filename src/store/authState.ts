@@ -3,7 +3,6 @@ import { create } from "zustand";
 interface AuthState {
   token: string;
   setToken: (value: string) => void;
-  removeToken: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -12,5 +11,4 @@ export const useAuthStore = create<AuthState>((set) => ({
     localStorage.setItem("ttt_access_token", value);
     set({ token: value });
   },
-  removeToken: () => set({ token: "" }),
 }));

@@ -1,8 +1,6 @@
-import { CircleQuestionMarkIcon } from "lucide-react";
-
 import { useHelpStore } from "@/store/helpState";
 
-import { Button } from "../ui/button";
+import { HelpDialogButton } from "../buttons/helper";
 import {
   Dialog,
   DialogContent,
@@ -20,16 +18,7 @@ export const HelperDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger
-        render={
-          <Button
-            size="icon-lg"
-            variant="ghost"
-            title={`Press ? to show keybinds`}
-            className="rounded-full fixed bottom-20 right-5 dark:bg-secondary dark:text-primary-secondary"
-          >
-            <CircleQuestionMarkIcon className="size-6" />
-          </Button>
-        }
+        render={<HelpDialogButton onClick={() => setOpen(true)} />}
       />
       <DialogContent className="flex flex-col gap-1" showCloseButton={false}>
         <DialogHeader className="mb-2">

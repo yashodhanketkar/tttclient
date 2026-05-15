@@ -1,4 +1,3 @@
-import { ToTop } from "@/components/interface/common";
 import { useAuth } from "@/store/query/auth";
 import { useBoard } from "@/store/query/board";
 
@@ -26,8 +25,7 @@ export const Boards = () => {
 
   return (
     <div className="container mb-4">
-      <DataTable columns={columns} data={boards!} opts />
-      <ToTop />
+      <DataTable columns={columns} data={boards!} tableName="My boards" opts />
     </div>
   );
 };

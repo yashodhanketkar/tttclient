@@ -134,4 +134,10 @@
   button {
     cursor: pointer;
   }
+
+  .board-button {
+    @apply bg-card aspect-square font-semibold text-[20cqw] rounded-lg shadow dark:bg-background/65;
+    @apply hover:bg-card-foreground/5 hover:bg-inherit hover:dark:bg-background enabled:cursor-pointer;
+    @apply disabled:hover:bg-card cursor-auto;
+  }
 }

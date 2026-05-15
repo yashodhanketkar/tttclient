@@ -18,14 +18,14 @@ export const menu_config: MenuType = {
       label: "Games",
       items: [
         {
-          to: "/stats",
-          title: "Stats",
-          description: "Statistics of your games",
-        },
-        {
           to: "/board",
           title: "Board",
           description: "Manage or join a board",
+        },
+        {
+          to: "/stats",
+          title: "Stats",
+          description: "Statistics of your games",
         },
       ],
     },

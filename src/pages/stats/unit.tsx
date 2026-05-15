@@ -1,13 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 
-import { ToTop } from "@/components/interface/common";
+import { ScrollTopButton } from "@/components/buttons/scrolltop";
+import type { BoardType } from "@/components/types";
 import { useStats } from "@/store/query/stats";
 
 export const Stat = () => {
   const { id } = useParams();
+  const { useStatsByIdQuery } = useStats(id);
   const navigate = useNavigate();
 
-  const { data: stat, isLoading, isError } = useStats(id).useStatsByIdQuery;
+  const { data: stat, isLoading, isError } = useStatsByIdQuery;
 
   if (isLoading) return <>Loading data</>;
   if (isError) return <>Error</>;
@@ -62,7 +64,7 @@ export const Stat = () => {
                 <p>{stat.username}'s boards</p>
               </td>
             </tr>
-            {stat.boards.map((board, i) => (
+            {stat.boards.map((board: BoardType, i: number) => (
               <tr key={board._id}>
                 <td>{i + 1}</td>
                 <td>
@@ -82,7 +84,7 @@ export const Stat = () => {
           </tbody>
         </table>
       </div>
-      <ToTop />
+      <ScrollTopButton />
     </div>
   );
 };

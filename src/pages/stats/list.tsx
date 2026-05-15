@@ -1,5 +1,4 @@
 import { DataTable } from "@/components/datatable";
-import { ToTop } from "@/components/interface/common";
 import { useStats } from "@/store/query/stats";
 
 import { columns } from "./data";
@@ -13,8 +12,7 @@ export const Stats = () => {
 
   return (
     <div className="container mb-4">
-      <DataTable columns={columns} data={stats} />
-      <ToTop />
+      <DataTable columns={columns} data={stats} tableName="Player stats" />
     </div>
   );
 };
